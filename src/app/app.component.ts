@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AuthState} from './store/auth/auth.reduces';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './app.component.html'
 })
-export class AppComponent {
-  title = 'money-care-frontend';
+export class AppComponent implements OnInit {
+  title = 'Money Care';
+
+  constructor(private store$: Store<AuthState>) {
+  }
+
+  ngOnInit(): void {
+  }
 }

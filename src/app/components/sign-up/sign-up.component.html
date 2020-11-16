@@ -1,0 +1,57 @@
+<div class="sign-up-container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>Sign Up</h2>
+        <mat-form-field class="full-width-input">
+          <label>
+            <input matInput placeholder="First Name" formControlName="firstName" required>
+          </label>
+          <mat-error>
+            First name is required and should contains only letters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <label>
+            <input matInput placeholder="Last Name" formControlName="lastName" required>
+          </label>
+          <mat-error>
+            Last name is required and should contains only letters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <label>
+            <input matInput placeholder="Email" formControlName="email" required>
+          </label>
+          <mat-error>
+            Email is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <label>
+            <input matInput type="password" placeholder="Password" formControlName="password" required>
+          </label>
+          <mat-error>Password should contain at least 8 characters</mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <label>
+            <input matInput type="password" placeholder="Password repeat" formControlName="passwordRepeat" required>
+          </label>
+          <mat-error>Passwords are not the same</mat-error>
+        </mat-form-field>
+        <div>
+          <mat-error>{{getErrors()}}</mat-error>
+        </div>
+        <div class="sign-up-button">
+          <button mat-raised-button color="primary">Sign Up</button>
+        </div>
+        <div class="sign-up-error-description">
+          <mat-error >{{failedToCreateAccountMessage === true ? 'Account with same email already exists' : '&nbsp;'}}</mat-error>
+        </div>
+        <div class="sing-in-button">
+          <a mat-button [routerLink]="['/sign-in']">Or authorize to an existing account</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

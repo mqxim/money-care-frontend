@@ -1,0 +1,30 @@
+.sign-up-container {
+
+}
+
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.sign-up-button {
+  padding-top: 10px;
+}
+
+.sign-up-error-description {
+  font-size: 15px;
+  padding-top: 20px;
+}
+
+.sing-in-button {
+  margin-top: 10px;
+
+  a {
+    font-size: 12px;
+  }
+}
