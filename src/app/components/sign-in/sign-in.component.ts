@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthState} from '../../store/auth/auth.reduces';
+import {AuthState} from '../../store/auth/auth.reducer';
 import {ActionsSubject, Store} from '@ngrx/store';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthActionsTypes, SignInFailureAction, SignInSuccessAction, TrySignInAction} from '../../store/auth/auth.actions';
+import {AuthActionsTypes, SignInFailureAction, SignInSuccessAction, SignOutAction, TrySignInAction} from '../../store/auth/auth.actions';
 import {ofType} from '@ngrx/effects';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -20,6 +21,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AuthState>,
     private actions$: ActionsSubject,
+    private router: Router
   ) {
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -28,12 +30,15 @@ export class SignInComponent implements OnInit, OnDestroy {
 
     this.failedToAuthMessage = false;
 
+    this.store$.dispatch(new SignOutAction());
+
     this.actions$
       .pipe(
         ofType<SignInSuccessAction>(AuthActionsTypes.SIGN_IN_SUCCESS),
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
+        this.router.navigateByUrl('/').then(r => {});
       });
 
     this.actions$

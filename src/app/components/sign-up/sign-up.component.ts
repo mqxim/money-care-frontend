@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {ActionsSubject, Store} from '@ngrx/store';
-import {AuthState} from '../../store/auth/auth.reduces';
+import {AuthState} from '../../store/auth/auth.reducer';
 import {ofType} from '@ngrx/effects';
 import {
-  AuthActionsTypes,
+  AuthActionsTypes, SignOutAction,
   SignUpFailureAction,
   SignUpSuccessAction, TrySignUpAction,
 } from '../../store/auth/auth.actions';
@@ -47,6 +47,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
         passwordRepeatDoesNotMatch: 'Password does not match password repeat'
       };
     });
+
+    this.store$.dispatch(new SignOutAction());
 
     this.actions$
       .pipe(
