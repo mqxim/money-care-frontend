@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AuthState} from './store/auth/auth.reduces';
+import {AuthState} from './store/auth/auth.reducer';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,12 @@ import {AuthState} from './store/auth/auth.reduces';
 export class AppComponent implements OnInit {
   title = 'Money Care';
 
-  constructor(private store$: Store<AuthState>) {
+  constructor(
+    private store$: Store<AuthState>,
+    private router: Router
+    ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
   }
 }

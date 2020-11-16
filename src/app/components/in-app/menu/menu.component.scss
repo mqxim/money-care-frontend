@@ -1,0 +1,37 @@
+$USER_ICON_SQUARE_SIZE: 2.3em;
+
+.menu-container {
+  opacity: 0.8;
+}
+
+.user-icon {
+  padding: 0;
+  margin: 0;
+  width: $USER_ICON_SQUARE_SIZE;
+  height: $USER_ICON_SQUARE_SIZE;
+  cursor: pointer;
+}
+
+.space-fill {
+  flex: 1 1 auto;
+}
+
+[data-letters]:before {
+  content: attr(data-letters);
+  display: inline-block;
+  font-size: 1em;
+  width: $USER_ICON_SQUARE_SIZE;
+  height: $USER_ICON_SQUARE_SIZE;
+  line-height: $USER_ICON_SQUARE_SIZE;
+  text-align: center;
+  border-radius: 50%;
+  background: #768fff;
+  vertical-align: middle;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.user-menu-width {
+  min-width: 300px;
+}

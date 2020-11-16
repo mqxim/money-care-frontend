@@ -14,6 +14,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {SignInModule} from './components/sign-in/sign-in.module';
 import {SignUpModule} from './components/sign-up/sign-up.module';
+import {InAppModule} from './components/in-app/in-app/in-app.module';
+
+import {UINode, UIReducer} from './store/ui/ui.reducer';
+import {authNode, authReducer} from './store/auth/auth.reducer';
 
 const effects = [
   AuthEffects,
@@ -34,8 +38,12 @@ const effects = [
     StoreRouterConnectingModule.forRoot(),
     RouterModule.forRoot([]),
 
+    StoreModule.forFeature(authNode, authReducer),
+    StoreModule.forFeature(UINode, UIReducer),
+
     SignInModule,
     SignUpModule,
+    InAppModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

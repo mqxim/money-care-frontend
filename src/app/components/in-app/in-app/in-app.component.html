@@ -1,0 +1,9 @@
+<div>
+  <app-menu
+    *ngIf="userFullName$ | async"
+    [name]="'Money Care'"
+    [username]="userFullName$ | async"
+    (whenSignOut)="handleSignOut()"
+  ></app-menu>
+  <router-outlet></router-outlet>
+</div>
