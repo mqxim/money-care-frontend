@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       ]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      passwordRepeat: new FormControl(null, [Validators.required])
+      passwordRepeat: new FormControl(null, [])
     }, (control) => {
       const ctrl = control as FormGroup;
       if (ctrl.controls.password.value === ctrl.controls.passwordRepeat.value) {
@@ -53,9 +53,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         ofType<SignUpSuccessAction>(AuthActionsTypes.SIGN_UP_SUCCESS),
       )
       .pipe(takeUntil(this.destroy$))
-      .subscribe((d) => {
-        console.log(d);
-      });
+      .subscribe(() => {});
 
     this.actions$
       .pipe(
