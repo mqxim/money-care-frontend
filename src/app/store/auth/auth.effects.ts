@@ -26,7 +26,7 @@ export class AuthEffects {
         this.authService.trySignIn(action.payload.email, action.payload.password)
           .pipe(
             map(response => {
-              return new SignInSuccessAction({user: response});
+              return new SignInSuccessAction({user: response, email: action.payload.email, password: action.payload.password});
             }),
             catchError((err) => {
               const error = err as HttpErrorResponse;
@@ -56,12 +56,12 @@ export class AuthEffects {
         this.authService.trySignUp({
           email: action.payload.email,
           password: action.payload.password,
-          firstName : action.payload.firstName,
+          firstName: action.payload.firstName,
           lastName: action.payload.lastName
         })
           .pipe(
             map(response => {
-              return new SignUpSuccessAction({user: response});
+              return new SignUpSuccessAction({user: response, email: action.payload.email, password: action.payload.password});
             }),
             catchError((err) => {
               const error = err as HttpErrorResponse;

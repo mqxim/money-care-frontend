@@ -1,5 +1,6 @@
 import {Action} from '@ngrx/store';
 import User from '../../models/User';
+import TokenService from '../../services/token.service';
 
 export enum AuthActionsTypes {
   TRY_SIGN_IN = '[Auth] TRY_SIGN_IN',
@@ -8,6 +9,7 @@ export enum AuthActionsTypes {
   TRY_SIGN_UP = '[Auth] TRY_SIGN_UP',
   SIGN_UP_SUCCESS = '[Auth] SIGN_UP_SUCCESS',
   SIGN_UP_FAILURE = '[Auth] SIGN_UP_FAILURE',
+  SIGN_OUT = '[Auth] SING_OUT'
 }
 
 export class TrySignInAction implements Action {
@@ -23,9 +25,8 @@ export class TrySignInAction implements Action {
 export class SignInSuccessAction implements Action {
   readonly type = AuthActionsTypes.SIGN_IN_SUCCESS;
 
-  constructor(public payload: {
-    user: User,
-  }) {
+  constructor(public payload: { user: User, email: string, password: string, }) {
+    TokenService.saveToken(payload.email, payload.password);
   }
 }
 
@@ -50,11 +51,11 @@ export class TrySignUpAction implements Action {
   }
 }
 
-
 export class SignUpSuccessAction implements Action {
   readonly type = AuthActionsTypes.SIGN_UP_SUCCESS;
 
-  constructor(public payload: { user: User, }) {
+  constructor(public payload: { user: User, email: string, password: string, }) {
+    TokenService.saveToken(payload.email, payload.password);
   }
 }
 
@@ -67,12 +68,22 @@ export class SignUpFailureAction implements Action {
   }
 }
 
+export class SignOutAction implements Action {
+  readonly type = AuthActionsTypes.SIGN_OUT;
+
+  constructor() {
+    TokenService.deleteToken();
+  }
+}
+
 type AuthAction = TrySignInAction
   | TrySignUpAction
   | SignInSuccessAction
   | SignUpSuccessAction
   | SignInFailureAction
-  | SignUpFailureAction;
+  | SignUpFailureAction
+  | SignOutAction
+  ;
 
 export {
   AuthAction

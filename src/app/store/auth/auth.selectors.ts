@@ -1,15 +1,15 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {authNode, AuthState} from './auth.reduces';
+import {authNode, AuthState} from './auth.reducer';
 import User from '../../models/User';
 
-export const authFeature = createFeatureSelector<AuthState>(authNode);
+const authFeatureSelector = createFeatureSelector<AuthState>(authNode);
 
 export const selectIsAuthed = createSelector(
-  authFeature,
+  authFeatureSelector,
   (state): boolean => state.isAuthenticated
 );
 
 export const selectUser = createSelector(
-  authFeature,
+  authFeatureSelector,
   (state): User | null => state.user
 );

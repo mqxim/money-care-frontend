@@ -23,12 +23,11 @@ class AuthServices extends BaseService {
           if (!('id' in response && 'firstName' in response && 'lastName' in response)) {
             throw new Error('Response does not contains valid data');
           }
-
-          return {
-            id: response.id,
-            firstName: response.firstName,
-            lastName: response.lastName
-          };
+          return new User(
+            response.id,
+            response.firstName,
+            response.lastName
+          );
         })
       );
   }
@@ -50,11 +49,11 @@ class AuthServices extends BaseService {
             throw new Error('Response does not contains valid data');
           }
 
-          return {
-            id: response.id,
-            firstName: response.firstName,
-            lastName: response.lastName
-          };
+          return new User(
+            response.id,
+            response.firstName,
+            response.lastName
+          );
         })
       );
   }

@@ -21,18 +21,14 @@ export function authReducer(state = initialState, action: AuthAction): AuthState
         user: action.payload.user,
       };
     }
-    case AuthActionsTypes.SIGN_UP_FAILURE: {
-      return {
-        isAuthenticated: false,
-        user: null
-      };
-    }
     case AuthActionsTypes.SIGN_IN_SUCCESS: {
       return {
         isAuthenticated: true,
         user: action.payload.user,
       };
     }
+    case AuthActionsTypes.SIGN_UP_FAILURE:
+    case AuthActionsTypes.SIGN_OUT:
     case AuthActionsTypes.SIGN_IN_FAILURE: {
       return {
         isAuthenticated: false,
