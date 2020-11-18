@@ -1,0 +1,35 @@
+<div class="side-nav-container">
+  <div class="side-nav-header">
+    <img class="logo" src="../../../../assets/logo.png" alt="logo">
+    <h1 class="title">Money Care</h1>
+    <div style="clear: both"></div>
+  </div>
+  <mat-nav-list>
+    <mat-list>
+      <div mat-subheader>
+        My accounts
+        <span class="divider"></span>
+        <mat-icon class="settings" *ngIf="!isEditAccountsMode" (click)="isEditAccountsMode = true">settings</mat-icon>
+        <mat-icon class="settings-done" *ngIf="isEditAccountsMode" (click)="isEditAccountsMode = false">done</mat-icon>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-list-item *ngFor="let i of accounts$ | async">
+        <mat-icon mat-list-icon>attach_money</mat-icon>
+        <div mat-line>
+          {{i.name}}
+          <span class="account-currency">[{{getWalletCurrencyName(i.currencyId)}} {{getWalletCurrencySign(i.currencyId)}}]</span>
+        </div>
+        <div mat-line>Created at {{i.createDate | date}}</div>
+        <span class="divider"></span>
+        <div class="operations-with-account" *ngIf="isEditAccountsMode">
+          <mat-icon class="edit-operation shake" (click)="onRenameAccount(i.id)">edit</mat-icon>
+          <mat-icon class="delete-operation shake" (click)="onDeleteAccount(i.id)">delete_forever</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-nav-list>
+  <div class="create-account-button">
+    <button mat-stroked-button color="basic" (click)="onCreateAccount()">Create new account</button>
+  </div>
+  <div style="clear: both"></div>
+</div>

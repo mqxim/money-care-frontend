@@ -1,7 +1,10 @@
 <div class="menu-container">
-  <mat-progress-bar [mode]="loadingType$ | async" value="100"></mat-progress-bar>
+  <mat-progress-bar
+    [mode]="(loadingType$ | async) > 0 ? 'indeterminate' : 'determinate'"
+    [value]="(loadingType$ | async) > 0 ? 0 : 100">
+  </mat-progress-bar>
   <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <button mat-icon-button aria-label="" (click)="handleOnMenuClick()">
       <mat-icon>menu</mat-icon>
     </button>
     <span>{{name}}</span>

@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MenuComponent } from './menu.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MenuComponent} from './menu.component';
 import {AngularMaterialModule} from '../../../angular-material.module';
-
 
 
 @NgModule({
@@ -15,4 +14,5 @@ import {AngularMaterialModule} from '../../../angular-material.module';
     AngularMaterialModule
   ]
 })
-export class MenuModule { }
+export class MenuModule {
+}

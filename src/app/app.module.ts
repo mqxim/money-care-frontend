@@ -18,9 +18,12 @@ import {InAppModule} from './components/in-app/in-app/in-app.module';
 
 import {UINode, UIReducer} from './store/ui/ui.reducer';
 import {authNode, authReducer} from './store/auth/auth.reducer';
+import {accountNode, accountReducer} from './store/account/account.reducers';
+import {AccountEffects} from './store/account/account.effects';
 
 const effects = [
   AuthEffects,
+  AccountEffects,
 ];
 
 @NgModule({
@@ -40,6 +43,7 @@ const effects = [
 
     StoreModule.forFeature(authNode, authReducer),
     StoreModule.forFeature(UINode, UIReducer),
+    StoreModule.forFeature(accountNode, accountReducer),
 
     SignInModule,
     SignUpModule,
@@ -48,5 +52,6 @@ const effects = [
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
