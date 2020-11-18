@@ -10,6 +10,7 @@ import {
   SignUpSuccessAction, TrySignUpAction,
 } from '../../store/auth/auth.actions';
 import {takeUntil} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -24,6 +25,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AuthState>,
     private actions$: ActionsSubject,
+    private router: Router
   ) {
     this.form = new FormGroup({
       firstName: new FormControl(null, [
@@ -55,7 +57,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         ofType<SignUpSuccessAction>(AuthActionsTypes.SIGN_UP_SUCCESS),
       )
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {});
+      .subscribe(() => this.router.navigateByUrl('/').then(() => {}));
 
     this.actions$
       .pipe(
