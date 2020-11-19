@@ -52,6 +52,14 @@ export function accountReducer(state = initialState, action: AccountActions): Ac
         userAccounts: [...state.userAccounts.filter((acc) => acc.id !== action.payload.deletedAccountId)]
       };
     }
+    case AccountActionsTypes.RENAME_ACCOUNT_SUCCEEDED: {
+      return {
+        ...state,
+        userAccounts: [...state.userAccounts.map((acc) => {
+          return acc.id === action.payload.account.id ? action.payload.account : acc;
+        })]
+      };
+    }
     default: {
       return state;
     }

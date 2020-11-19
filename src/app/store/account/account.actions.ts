@@ -7,14 +7,17 @@ export enum AccountActionsTypes {
   USER_ACCOUNTS_LOADED = '[Account] USER_ACCOUNTS_LOADED',
   FAILED_TO_LOAD_USER_ACCOUNTS = '[Account] FAILED_TO_LOAD_USER_ACCOUNTS',
   LOAD_CURRENCIES = '[Account] LOAD_CURRENCIES',
-  CURRENCIES_LOADED = '[Accounts] CURRENCIES_LOADED',
-  FAILED_TO_LOAD_CURRENCIES = '[Accounts] FAILED_TO_LOAD_CURRENCIES',
-  CREATE_ACCOUNT_ACTION = '[Accounts] CREATE_ACCOUNT_ACTION',
-  FAILED_TO_CREATE_ACCOUNT = '[Accounts] FAILED_TO_CREATE_ACCOUNT',
-  CREATE_ACCOUNT_SUCCEEDED = '[Accounts] CREATE_ACCOUNT_SUCCEEDED',
-  DELETE_ACCOUNT = '[Accounts] DELETE_ACCOUNT',
-  DELETE_ACCOUNT_SUCCEEDED = '[Accounts] DELETE_ACCOUNT_SUCCEEDED',
-  FAILED_TO_DELETE_ACCOUNT = '[Accounts] FAILED_TO_DELETE_ACCOUNT',
+  CURRENCIES_LOADED = '[Account] CURRENCIES_LOADED',
+  FAILED_TO_LOAD_CURRENCIES = '[Account] FAILED_TO_LOAD_CURRENCIES',
+  CREATE_ACCOUNT_ACTION = '[Account] CREATE_ACCOUNT_ACTION',
+  FAILED_TO_CREATE_ACCOUNT = '[Account] FAILED_TO_CREATE_ACCOUNT',
+  CREATE_ACCOUNT_SUCCEEDED = '[Account] CREATE_ACCOUNT_SUCCEEDED',
+  DELETE_ACCOUNT = '[Account] DELETE_ACCOUNT',
+  DELETE_ACCOUNT_SUCCEEDED = '[Account] DELETE_ACCOUNT_SUCCEEDED',
+  FAILED_TO_DELETE_ACCOUNT = '[Account] FAILED_TO_DELETE_ACCOUNT',
+  RENAME_ACCOUNT_ACTION = '[Account] RENAME_ACCOUNT_ACTION',
+  RENAME_ACCOUNT_SUCCEEDED = '[Account] RENAME_ACCOUNT_SUCCEEDED',
+  FAILED_TO_RENAME_ACCOUNT = '[Account] FAILED_TO_RENAME_ACCOUNT',
 }
 
 export class LoadCurrenciesAction implements Action {
@@ -92,6 +95,31 @@ export class FailedToDeleteAccountAction implements Action {
   readonly type = AccountActionsTypes.FAILED_TO_DELETE_ACCOUNT;
 }
 
+export class RenameAccountAction implements Action {
+  readonly type = AccountActionsTypes.RENAME_ACCOUNT_ACTION;
+
+  constructor(
+    public payload: {
+      accountId: string,
+      newName: string
+    }
+  ) {
+  }
+}
+
+export class RenameAccountSucceededAction implements Action {
+  readonly type = AccountActionsTypes.RENAME_ACCOUNT_SUCCEEDED;
+
+  constructor(public payload: {
+    account: Account
+  }) {
+  }
+}
+
+export class FailedToRenameAccountAction implements Action {
+  readonly type = AccountActionsTypes.FAILED_TO_RENAME_ACCOUNT;
+}
+
 type AccountActions = UserAccountsLoadedAction
   | LoadUserAccountsAction
   | FailedToLoadUserAccountsAction
@@ -104,6 +132,9 @@ type AccountActions = UserAccountsLoadedAction
   | DeleteAccountAction
   | DeleteAccountSucceededAction
   | FailedToDeleteAccountAction
+  | RenameAccountAction
+  | RenameAccountSucceededAction
+  | FailedToRenameAccountAction
   ;
 
 export {

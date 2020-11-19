@@ -4,7 +4,7 @@ import {AccountState} from '../../../store/account/account.reducers';
 import {selectCurrencies, selectUserAccounts} from '../../../store/account/account.selectors';
 import Currency from '../../../models/Currency';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DeleteAccountAction} from '../../../store/account/account.actions';
+import {DeleteAccountAction, RenameAccountAction} from '../../../store/account/account.actions';
 
 @Component({
   selector: 'app-sidenav',
@@ -57,7 +57,12 @@ export class SidenavComponent implements OnInit {
   }
 
   onRenameAccount(id: string): void {
-    console.log(id);
+    this.dialog.open(RenameAccountDialogComponent, {
+      width: '700px',
+      data: {
+        accountId: id
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -106,5 +111,31 @@ export class DeleteAccountDialogComponent {
       this.accountsStore$.dispatch(new DeleteAccountAction({accountId: this.data.accountId}));
     }
     this.dialogRef.close(isDelete);
+  }
+}
+
+@Component({
+  selector: 'app-rename-account-dialog',
+  template: `
+    <div>
+      <app-rename-account-form (whenClose)="onClose()" (whenSubmit)="onSubmit($event)"></app-rename-account-form>
+    </div>
+  `
+})
+export class RenameAccountDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: {accountId: string},
+    public dialogRef: MatDialogRef<CreateAccountDialogComponent>,
+    private accountsStore$: Store<AccountState>,
+  ) {
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
+  }
+
+  onSubmit(info: {newName: string}): void {
+    this.accountsStore$.dispatch(new RenameAccountAction({accountId: this.data.accountId, newName: info.newName}));
+    this.dialogRef.close();
   }
 }

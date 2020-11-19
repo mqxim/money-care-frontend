@@ -5,8 +5,8 @@ import {
   AccountActionsTypes, CreateAccountAction, CreateAccountSucceededAction,
   CurrenciesLoadedAction, DeleteAccountAction, DeleteAccountSucceededAction, FailedToCreateAccountAction, FailedToDeleteAccountAction,
   FailedToLoadCurrenciesAction,
-  FailedToLoadUserAccountsAction,
-  LoadUserAccountsAction,
+  FailedToLoadUserAccountsAction, FailedToRenameAccountAction,
+  LoadUserAccountsAction, RenameAccountAction, RenameAccountSucceededAction,
   UserAccountsLoadedAction
 } from './account.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
@@ -78,6 +78,21 @@ export class AccountEffects {
             .pipe(
               map(() => new DeleteAccountSucceededAction({deletedAccountId: action.payload.accountId})),
               catchError(() => of(new FailedToDeleteAccountAction()))
+            );
+        })
+      );
+  }
+
+  @Effect()
+  renameAccount(): Observable<any> {
+    return this.actions$
+      .pipe(
+        ofType<RenameAccountAction>(AccountActionsTypes.RENAME_ACCOUNT_ACTION),
+        exhaustMap(action => {
+          return this.accountService.renameAccount(action.payload.accountId, action.payload.newName)
+            .pipe(
+              map((a) => new RenameAccountSucceededAction({account: a})),
+              catchError(() => of(new FailedToRenameAccountAction()))
             );
         })
       );

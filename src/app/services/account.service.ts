@@ -59,7 +59,7 @@ export default class AccountService extends BaseService {
           const accCurrencyId = r.hasOwnProperty('currencyId') ? r.currencyId : null;
           const createDate = r.hasOwnProperty('createDate') ? r.createDate : null;
 
-          if (!(id && name && currencyId && createDate)) {
+          if (!(id && accName && accCurrencyId && createDate)) {
             throw new Error('Invalid response');
           }
 
@@ -113,6 +113,29 @@ export default class AccountService extends BaseService {
           }
 
           throw new Error('Failed to delete account');
+        })
+      );
+  }
+
+  public renameAccount(accountId: string, newName: string): Observable<Account> {
+    return this.http.post(`${this.baseUrl}/api/account/${accountId}/rename`, {
+      NewName: newName
+    }, {
+      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+    })
+      .pipe(
+        map(response => {
+          const r = response as any;
+          const id = r.hasOwnProperty('id') ? r.id : null;
+          const accName = r.hasOwnProperty('name') ? r.name : null;
+          const accCurrencyId = r.hasOwnProperty('currencyId') ? r.currencyId : null;
+          const createDate = r.hasOwnProperty('createDate') ? r.createDate : null;
+
+          if (!(id && accName && accCurrencyId && createDate)) {
+            throw new Error('Invalid response');
+          }
+
+          return new Account(id, accName, accCurrencyId, createDate);
         })
       );
   }
