@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AccountState} from '../../../store/account/account.reducers';
 import {selectCurrencies, selectUserAccounts} from '../../../store/account/account.selectors';
 import Currency from '../../../models/Currency';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DeleteAccountAction} from '../../../store/account/account.actions';
 
 @Component({
   selector: 'app-sidenav',
@@ -47,7 +48,12 @@ export class SidenavComponent implements OnInit {
   }
 
   onDeleteAccount(id: string): void {
-    console.log(id);
+    this.dialog.open(DeleteAccountDialogComponent, {
+      width: '700px',
+      data: {
+        accountId: id
+      }
+    });
   }
 
   onRenameAccount(id: string): void {
@@ -60,9 +66,10 @@ export class SidenavComponent implements OnInit {
 
 @Component({
   selector: 'app-create-account-dialog',
-  template: `<div>
-    <app-create-account (whenClose)="onClose()" (whenFillForm)="onClose()"></app-create-account>
-  </div>`
+  template: `
+    <div>
+      <app-create-account (whenClose)="onClose()" (whenFillForm)="onClose()"></app-create-account>
+    </div>`
 })
 export class CreateAccountDialogComponent implements OnInit {
   constructor(
@@ -75,5 +82,29 @@ export class CreateAccountDialogComponent implements OnInit {
 
   onClose(): void {
     this.dialogRef.close();
+  }
+}
+
+
+@Component({
+  selector: 'app-delete-account-dialog',
+  template: `
+    <div>
+      <app-delete-account-form (whenClose)="onClose(false)" (whenSubmit)="onClose(true)"></app-delete-account-form>
+    </div>`
+})
+export class DeleteAccountDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: {accountId: string},
+    public dialogRef: MatDialogRef<CreateAccountDialogComponent>,
+    private accountsStore$: Store<AccountState>,
+  ) {
+  }
+
+  onClose(isDelete): void {
+    if (isDelete) {
+      this.accountsStore$.dispatch(new DeleteAccountAction({accountId: this.data.accountId}));
+    }
+    this.dialogRef.close(isDelete);
   }
 }

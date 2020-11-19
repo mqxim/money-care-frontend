@@ -46,6 +46,12 @@ export function accountReducer(state = initialState, action: AccountActions): Ac
         userAccounts: [...state.userAccounts, action.payload.account]
       };
     }
+    case AccountActionsTypes.DELETE_ACCOUNT_SUCCEEDED: {
+      return {
+        ...state,
+        userAccounts: [...state.userAccounts.filter((acc) => acc.id !== action.payload.deletedAccountId)]
+      };
+    }
     default: {
       return state;
     }

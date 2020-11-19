@@ -11,7 +11,10 @@ export enum AccountActionsTypes {
   FAILED_TO_LOAD_CURRENCIES = '[Accounts] FAILED_TO_LOAD_CURRENCIES',
   CREATE_ACCOUNT_ACTION = '[Accounts] CREATE_ACCOUNT_ACTION',
   FAILED_TO_CREATE_ACCOUNT = '[Accounts] FAILED_TO_CREATE_ACCOUNT',
-  CREATE_ACCOUNT_SUCCEEDED = '[Accounts] CREATE_ACCOUNT_SUCCEEDED'
+  CREATE_ACCOUNT_SUCCEEDED = '[Accounts] CREATE_ACCOUNT_SUCCEEDED',
+  DELETE_ACCOUNT = '[Accounts] DELETE_ACCOUNT',
+  DELETE_ACCOUNT_SUCCEEDED = '[Accounts] DELETE_ACCOUNT_SUCCEEDED',
+  FAILED_TO_DELETE_ACCOUNT = '[Accounts] FAILED_TO_DELETE_ACCOUNT',
 }
 
 export class LoadCurrenciesAction implements Action {
@@ -64,8 +67,29 @@ export class CreateAccountSucceededAction implements Action {
   constructor(public payload: {
     account: Account
   }) {
-    console.log(payload);
   }
+}
+
+export class DeleteAccountAction implements Action {
+  readonly type = AccountActionsTypes.DELETE_ACCOUNT;
+
+  constructor(public payload: {
+    accountId: string
+  }) {
+  }
+}
+
+export class DeleteAccountSucceededAction implements Action {
+  readonly type = AccountActionsTypes.DELETE_ACCOUNT_SUCCEEDED;
+
+  constructor(public payload: {
+    deletedAccountId: string
+  }) {
+  }
+}
+
+export class FailedToDeleteAccountAction implements Action {
+  readonly type = AccountActionsTypes.FAILED_TO_DELETE_ACCOUNT;
 }
 
 type AccountActions = UserAccountsLoadedAction
@@ -77,6 +101,9 @@ type AccountActions = UserAccountsLoadedAction
   | CreateAccountAction
   | FailedToCreateAccountAction
   | CreateAccountSucceededAction
+  | DeleteAccountAction
+  | DeleteAccountSucceededAction
+  | FailedToDeleteAccountAction
   ;
 
 export {

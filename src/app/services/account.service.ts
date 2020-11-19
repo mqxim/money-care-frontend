@@ -98,4 +98,22 @@ export default class AccountService extends BaseService {
         )
       );
   }
+
+  public deleteAccount(accountId: string): Observable<boolean> {
+    return this.http.post(`${this.baseUrl}/api/account/${accountId}/delete`, {}, {
+      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+    })
+      .pipe(
+        map((response) => {
+          const r = response as any;
+          if (r?.status) {
+            if (r.status === 'OK') {
+              return true;
+            }
+          }
+
+          throw new Error('Failed to delete account');
+        })
+      );
+  }
 }

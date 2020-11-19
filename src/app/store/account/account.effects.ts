@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, of} from 'rxjs';
 import {
   AccountActionsTypes, CreateAccountAction, CreateAccountSucceededAction,
-  CurrenciesLoadedAction, FailedToCreateAccountAction,
+  CurrenciesLoadedAction, DeleteAccountAction, DeleteAccountSucceededAction, FailedToCreateAccountAction, FailedToDeleteAccountAction,
   FailedToLoadCurrenciesAction,
   FailedToLoadUserAccountsAction,
   LoadUserAccountsAction,
@@ -68,4 +68,18 @@ export class AccountEffects {
       );
   }
 
+  @Effect()
+  deleteAccount(): Observable<any> {
+    return this.actions$
+      .pipe(
+        ofType<DeleteAccountAction>(AccountActionsTypes.DELETE_ACCOUNT),
+        exhaustMap(action => {
+          return this.accountService.deleteAccount(action.payload.accountId)
+            .pipe(
+              map(() => new DeleteAccountSucceededAction({deletedAccountId: action.payload.accountId})),
+              catchError(() => of(new FailedToDeleteAccountAction()))
+            );
+        })
+      );
+  }
 }
