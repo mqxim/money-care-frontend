@@ -18,12 +18,15 @@ import {InAppModule} from './components/in-app/in-app/in-app.module';
 
 import {UINode, UIReducer} from './store/ui/ui.reducer';
 import {authNode, authReducer} from './store/auth/auth.reducer';
-import {accountNode, accountReducer} from './store/account/account.reducers';
+import {accountNode, accountReducer} from './store/account/account.reducer';
 import {AccountEffects} from './store/account/account.effects';
+import {accountReportNode, accountReportReduces} from './store/account-report/account-report.reducer';
+import {AccountReportEffects} from './store/account-report/account-report.effects';
 
 const effects = [
   AuthEffects,
   AccountEffects,
+  AccountReportEffects,
 ];
 
 @NgModule({
@@ -36,14 +39,15 @@ const effects = [
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot({}, {}),
+    StoreModule.forFeature(authNode, authReducer),
+    StoreModule.forFeature(UINode, UIReducer),
+    StoreModule.forFeature(accountNode, accountReducer),
+    StoreModule.forFeature(accountReportNode, accountReportReduces),
+
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot(),
     RouterModule.forRoot([]),
-
-    StoreModule.forFeature(authNode, authReducer),
-    StoreModule.forFeature(UINode, UIReducer),
-    StoreModule.forFeature(accountNode, accountReducer),
 
     SignInModule,
     SignUpModule,
@@ -52,6 +56,5 @@ const effects = [
   providers: [],
   bootstrap: [AppComponent]
 })
-
 export class AppModule {
 }

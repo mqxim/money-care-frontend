@@ -13,9 +13,9 @@
         <mat-icon class="settings-done" *ngIf="isEditAccountsMode" (click)="isEditAccountsMode = false">done</mat-icon>
       </div>
       <mat-divider></mat-divider>
-      <mat-list-item *ngFor="let i of accounts$ | async">
+      <mat-list-item *ngFor="let i of accounts$ | async" class="account-item" (click)="navigateToAccount(i.id)">
         <mat-icon mat-list-icon>attach_money</mat-icon>
-        <div mat-line>
+        <div mat-line class="account-name">
           {{i.name}}
           <span class="account-currency">[{{getWalletCurrencyName(i.currencyId)}} {{getWalletCurrencySign(i.currencyId)}}]</span>
         </div>

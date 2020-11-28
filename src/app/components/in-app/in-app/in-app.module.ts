@@ -5,6 +5,7 @@ import {RouterModule} from '@angular/router';
 import {MenuModule} from '../menu/menu.module';
 import {AngularMaterialModule} from '../../../angular-material.module';
 import {SidenavModule} from '../sidenav/sidenav.module';
+import {AccountReportModule} from '../account-report/account-report.module';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import {SidenavModule} from '../sidenav/sidenav.module';
     CommonModule,
     RouterModule,
     MenuModule,
+    AccountReportModule,
     AngularMaterialModule,
     SidenavModule
   ]

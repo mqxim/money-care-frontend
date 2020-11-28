@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {AccountState} from '../../../store/account/account.reducers';
+import {AccountState} from '../../../store/account/account.reducer';
 import {selectCurrencies, selectUserAccounts} from '../../../store/account/account.selectors';
 import Currency from '../../../models/Currency';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DeleteAccountAction, RenameAccountAction} from '../../../store/account/account.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -18,7 +19,8 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private accountsStore$: Store<AccountState>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.accountsStore$.pipe(select(selectCurrencies)).subscribe((c) => {
       this.currencies = c;
@@ -39,6 +41,12 @@ export class SidenavComponent implements OnInit {
       return c.code;
     }
     return null;
+  }
+
+  async navigateToAccount(id: string): Promise<boolean> {
+    if (!this.isEditAccountsMode) {
+      return this.router.navigateByUrl(`/account/${id}`);
+    }
   }
 
   onCreateAccount(): void {
@@ -100,7 +108,7 @@ export class CreateAccountDialogComponent implements OnInit {
 })
 export class DeleteAccountDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {accountId: string},
+    @Inject(MAT_DIALOG_DATA) public data: { accountId: string },
     public dialogRef: MatDialogRef<CreateAccountDialogComponent>,
     private accountsStore$: Store<AccountState>,
   ) {
@@ -124,7 +132,7 @@ export class DeleteAccountDialogComponent {
 })
 export class RenameAccountDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {accountId: string},
+    @Inject(MAT_DIALOG_DATA) public data: { accountId: string },
     public dialogRef: MatDialogRef<CreateAccountDialogComponent>,
     private accountsStore$: Store<AccountState>,
   ) {
@@ -134,7 +142,7 @@ export class RenameAccountDialogComponent {
     this.dialogRef.close();
   }
 
-  onSubmit(info: {newName: string}): void {
+  onSubmit(info: { newName: string }): void {
     this.accountsStore$.dispatch(new RenameAccountAction({accountId: this.data.accountId, newName: info.newName}));
     this.dialogRef.close();
   }

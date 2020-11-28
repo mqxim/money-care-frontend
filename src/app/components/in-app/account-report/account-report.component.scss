@@ -1,0 +1,146 @@
+.account-report-container {
+  position: relative;
+
+  min-width: 300px;
+  padding: 15px 7px 7px;
+
+  @media screen and (max-width: 425px) {
+    padding: 15px 5px 5px;
+  }
+
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.card {
+  border-radius: 4px;
+  background-color: #fff;
+
+  &-content {
+    width: 100% !important;
+    text-align: right;
+    padding: 0 10px;
+
+    &-heading {
+      color: #fff;
+      font-size: 20px;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &-counter {
+      padding-top: 10px;
+      font-size: 25px;
+
+      &-positive {
+        color: greenyellow;
+      }
+
+      &-negative {
+        color: #fff;
+      }
+    }
+  }
+
+  &-header, &-footer {
+    padding-top: 10px !important;
+    text-align: right;
+    font-size: 1.5em;
+
+    span {
+      width: 100%;
+    }
+  }
+}
+
+.no-transactions {
+  margin: 10px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.transactions-list {
+  border-radius: 4px;
+  margin-top: 10px;
+  max-height: calc(100vh - 350px);
+}
+
+.transactions-controls {
+  margin-top: 30px;
+  text-align: right;
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+.transaction {
+  margin-bottom: 10px;
+
+  position: relative;
+
+  &:hover {
+    .transaction-actions {
+      display: block;
+    }
+  }
+
+  &-actions {
+    display: none;
+
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+
+    transition: 0.3s;
+    opacity: 0.3;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &-content {
+    display: flex;
+    justify-content: space-between;
+
+    &-money-counter {
+      margin-top: -20px;
+
+      h1 {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.bottom-toolbar {
+  text-align: center;
+
+  width: 60px;
+
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+
+  button {
+    opacity: 0.3;
+    transition: 0.3s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.mat-card-content, .mat-card-actions {
+  margin-bottom: 0;
+}

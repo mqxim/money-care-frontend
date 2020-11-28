@@ -1,0 +1,120 @@
+<div class="account-report-container" *ngIf="accountReport !== null">
+  <div style="background-color: #fff; border-radius: 4px; margin-bottom: 10px; padding: 5px 20px">
+    <form>
+      <mat-form-field appearance="standard" class="full-width-input" style="display: block;">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input
+          [formGroup]="form"
+          [rangePicker]="picker"
+        >
+          <input matStartDate placeholder="Start date" formControlName="startDate">
+          <input matEndDate placeholder="End date" formControlName="endDate">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </form>
+  </div>
+  <mat-grid-list cols="2" rowHeight="74px" gutterSize="7px">
+    <mat-grid-tile
+      class="card"
+      [style.background]="cardSettings.backgroundColor"
+    >
+      <div class="card-content">
+        <div class="card-content-heading">
+          <span>🏦 Incomes</span>
+        </div>
+        <div class="card-content-counter">
+          <span
+            [ngClass]="accountReport.incomes > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
+          >{{accountReport.incomes > 0 ? '+' : (accountReport.incomes < 0 ? '-' : '')}} {{getAbsolute(accountReport.incomes)}} {{accountReport.currency.code}}</span>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile
+      class="card"
+      [style.background]="cardSettings.backgroundColor"
+    >
+      <div class="card-content">
+        <div class="card-content-heading">
+          <span
+          >💳 Expenses</span>
+        </div>
+        <div class="card-content-counter">
+          <span
+            [ngClass]="accountReport.expenses > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
+          >{{accountReport.expenses > 0 ? '+' : (accountReport.expenses < 0 ? '-' : '')}} {{getAbsolute(accountReport.expenses)}} {{accountReport.currency.code}}</span>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile
+      class="card"
+      [style.background]="cardSettings.backgroundColor"
+    >
+      <div class="card-content">
+        <div class="card-content-heading">
+          <span>⏱️ Period Balance</span>
+        </div>
+        <div class="card-content-counter">
+          <span
+            [ngClass]="accountReport.currentBalance > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
+
+          >{{accountReport.periodBalance > 0 ? '+' : (accountReport.periodBalance < 0 ? '-' : '')}} {{getAbsolute(accountReport.periodBalance)}} {{accountReport.currency.code}}</span>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile
+      class="card"
+      [style.background]="cardSettings.backgroundColor"
+    >
+      <div class="card-content">
+        <div class="card-content-heading">
+          <span>💵 Current Balance</span>
+        </div>
+        <div class="card-content-counter">
+          <span
+            [ngClass]="accountReport.currentBalance > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
+          >{{accountReport.currentBalance > 0 ? '+' : (accountReport.currentBalance < 0 ? '-' : '')}} {{getAbsolute(accountReport.currentBalance)}} {{accountReport.currency.code}}</span>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="transactions-controls">
+    <span>
+      <button color="accent" mat-raised-button (click)="onSignificantSort()">Significant</button>
+      <button color="primary" mat-raised-button (click)="onRecentSort()">Recent</button>
+    </span>
+  </div>
+  <div class="no-transactions" *ngIf="accountReport.transactions.length == 0">
+    <span>There's no transactions for provided period</span>
+  </div>
+  <div class="transactions-list">
+    <mat-card class="transaction" *ngFor="let transaction of accountReport.transactions">
+      <mat-card-header>
+        <div mat-card-avatar style="background-color: aqua"></div>
+        <mat-card-title>
+          <span>{{ transaction.category }}</span>
+        </mat-card-title>
+        <mat-card-subtitle>{{ transaction.createDate | date : 'EEEE, MMMM d, y, HH:mm' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="transaction-content">
+          <div>{{transaction.comment}}</div>
+          <div class="transaction-content-money-counter">
+            <h1>{{transaction.cost}}&nbsp;{{accountReport.currency.code}}</h1>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="transaction-actions">
+        <button mat-mini-fab color="warn" aria-label="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+<div class="bottom-toolbar">
+  <button mat-fab color="primary" aria-label="Add button">
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
+</div>
