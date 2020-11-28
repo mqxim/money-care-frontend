@@ -26,7 +26,7 @@ export class AccountEffects {
       ofType<LoadUserAccountsAction>(AccountActionsTypes.LOAD_USER_ACCOUNTS),
       exhaustMap(() =>
         this.accountService
-          .getUserAccount()
+          .getUserAccounts()
           .pipe(
             map((response) => {
               return new UserAccountsLoadedAction({accounts: response});

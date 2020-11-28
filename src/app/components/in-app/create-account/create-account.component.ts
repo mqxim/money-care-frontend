@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import Currency from '../../../models/Currency';
 import {select, Store} from '@ngrx/store';
-import {AccountState} from '../../../store/account/account.reducers';
+import {AccountState} from '../../../store/account/account.reducer';
 import {selectCurrencies} from '../../../store/account/account.selectors';
 import {CreateAccountAction} from '../../../store/account/account.actions';
 

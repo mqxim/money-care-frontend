@@ -15,7 +15,7 @@ export default class AccountService extends BaseService {
     super();
   }
 
-  public getUserAccount(): Observable<Account[]> {
+  public getUserAccounts(): Observable<Account[]> {
     return this.http.post<Account[]>(`${this.baseUrl}/api/account/all`, {}, {
       headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
     })

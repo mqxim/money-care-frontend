@@ -1,5 +1,5 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {accountNode, AccountState} from './account.reducers';
+import {accountNode, AccountState} from './account.reducer';
 
 
 const accountFeatureSelector = createFeatureSelector<AccountState>(accountNode);
