@@ -15,16 +15,4 @@ export default class AccountReport {
     public readonly currency: Currency,
   ) {
   }
-
-  sortRecent(): void {
-    this.transactions = this.transactions.slice().sort((a, b) => {
-      return a.cost < b.cost ? 1 : 0;
-    });
-  }
-
-  sortSignificant(): void {
-    this.transactions = this.transactions.slice().sort((a, b) => {
-      return a.createDate < b.createDate ? 1 : 0;
-    });
-  }
 }

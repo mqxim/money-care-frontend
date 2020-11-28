@@ -56,15 +56,19 @@
 }
 
 .no-transactions {
+  display: block;
+
   margin: 10px 0 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 0;
+  padding: 10px 0;
 
   background-color: #fff;
   border-radius: 4px;
   font-size: 20px;
+
+  div {
+    width: fit-content;
+    margin: 10px auto;
+  }
 }
 
 .transactions-list {

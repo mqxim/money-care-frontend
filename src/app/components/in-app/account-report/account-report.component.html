@@ -81,12 +81,13 @@
   </mat-grid-list>
   <div class="transactions-controls">
     <span>
-      <button color="accent" mat-raised-button (click)="onSignificantSort()">Significant</button>
-      <button color="primary" mat-raised-button (click)="onRecentSort()">Recent</button>
+      <button [disabled]="accountReport.transactions.length == 0" color="accent" mat-raised-button (click)="onSignificantSort()">💲&nbsp;Significant</button>
+      <button [disabled]="accountReport.transactions.length == 0" color="primary" mat-raised-button (click)="onRecentSort()">📆&nbsp;Recent</button>
     </span>
   </div>
   <div class="no-transactions" *ngIf="accountReport.transactions.length == 0">
-    <span>There's no transactions for provided period</span>
+    <div>There's no transactions for provided period.</div>
+    <div>Create new now! ↘️</div>
   </div>
   <div class="transactions-list">
     <mat-card class="transaction" *ngFor="let transaction of accountReport.transactions">

@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
 import {
   AccountReportActionsTypes,
   AccountReportLoaded, FailedLoadAccountReport,
-  LoadAccountReportAction
+  LoadAccountReportAction, SortAccountTransactionsByRecentAction, SortAccountTransactionsBySignificantAction
 } from '../../../store/account-report/account-report.actions';
 import {UIState} from '../../../store/ui/ui.reducer';
 import {UIBeginLoadingAction, UIEndLoadingAction} from '../../../store/ui/ui.actions';
@@ -51,8 +51,6 @@ export class AccountReportComponent implements OnInit {
     })())
   });
 
-  isLoading = false;
-
   accountReport: AccountReport | null;
 
   id: string | null = null;
@@ -92,7 +90,6 @@ export class AccountReportComponent implements OnInit {
 
   onAccountChange(): void {
     this.uiStore$.dispatch(new UIBeginLoadingAction());
-    this.isLoading = true;
     setTimeout(() => {
       this.accountReportStore$.dispatch(new LoadAccountReportAction({
         accountId: this.id,
@@ -107,11 +104,19 @@ export class AccountReportComponent implements OnInit {
   }
 
   onSignificantSort(): void {
-    this.accountReport.sortSignificant();
+    this.uiStore$.dispatch(new UIBeginLoadingAction());
+    setTimeout(() => {
+      this.accountReportStore$.dispatch(new SortAccountTransactionsBySignificantAction());
+      this.uiStore$.dispatch(new UIEndLoadingAction());
+    }, 1000);
   }
 
   onRecentSort(): void {
-    this.accountReport.sortRecent();
+    this.uiStore$.dispatch(new UIBeginLoadingAction());
+    setTimeout(() => {
+      this.accountReportStore$.dispatch(new SortAccountTransactionsByRecentAction());
+      this.uiStore$.dispatch(new UIEndLoadingAction());
+    }, 1000);
   }
 
   ngOnInit(): void {
