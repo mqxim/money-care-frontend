@@ -6,11 +6,11 @@ enum UIActionTypes {
 }
 
 class UIBeginLoadingAction implements Action {
-  readonly type: string = UIActionTypes.BEGIN_LOADING;
+  readonly type = UIActionTypes.BEGIN_LOADING;
 }
 
 class UIEndLoadingAction implements Action {
-  readonly type: string = UIActionTypes.END_LOADING;
+  readonly type = UIActionTypes.END_LOADING;
 }
 
 type UIActions = UIBeginLoadingAction | UIEndLoadingAction;
