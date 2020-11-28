@@ -8,9 +8,10 @@ import {AuthActionsTypes, SignInFailureAction, SignOutAction, TrySignInAction} f
 import {Router} from '@angular/router';
 import {UIState} from '../../../store/ui/ui.reducer';
 import {ofType} from '@ngrx/effects';
-import {Subject} from 'rxjs';
-import {AccountState} from '../../../store/account/account.reducers';
+import {Observable, Subject} from 'rxjs';
+import {AccountState} from '../../../store/account/account.reducer';
 import {LoadCurrenciesAction, LoadUserAccountsAction} from '../../../store/account/account.actions';
+import {selectLoadingQueue} from '../../../store/ui/ui.selectors';
 
 @Component({
   selector: 'app-in-app',
@@ -18,9 +19,9 @@ import {LoadCurrenciesAction, LoadUserAccountsAction} from '../../../store/accou
   styleUrls: ['./in-app.component.scss']
 })
 export class InAppComponent implements OnInit {
-  public isMenuOpen = false;
   public destroy$ = new Subject<boolean>();
-  public user$ = this.storeAuth$.pipe(select(selectUser));
+
+  public loadingType$: Observable<number> = this.uiStore$.pipe(select(selectLoadingQueue));
   public userFullName$ = this.storeAuth$.pipe(select(selectUser)).pipe(map(u => u?.getFullName()));
 
   constructor(
@@ -58,14 +59,5 @@ export class InAppComponent implements OnInit {
   handleSignOut(): void {
     this.storeAuth$.dispatch(new SignOutAction());
     this.router.navigateByUrl('/sign-in').catch();
-  }
-
-  openIfClosed(): void {
-    if (this.isMenuOpen) {
-    }
-  }
-
-  closeIfOpened(): void {
-
   }
 }
