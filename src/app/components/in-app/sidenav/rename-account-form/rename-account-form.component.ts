@@ -6,7 +6,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   template: `
     <div>
       <form [formGroup]="form">
-        <h1>Rename account</h1>
+        <h1>✍️ Rename account</h1>
         <mat-form-field class="full-width-input">
           <label>
             <input matInput placeholder="New name" formControlName="name" required autocomplete="off">

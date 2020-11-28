@@ -4,7 +4,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   selector: 'app-delete-account-form',
   template: `
     <div>
-      <h1>Are you sure to delete the account?</h1>
+      <h1>🗑️ Are you sure to delete the account?</h1>
       <span>All account data will be deleted without possibility to restore.</span>
       <div class="form-controls">
         <button mat-raised-button (click)="onClose()">Cancel</button>

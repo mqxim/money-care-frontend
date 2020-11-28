@@ -98,7 +98,6 @@ export class CreateAccountDialogComponent implements OnInit {
   }
 }
 
-
 @Component({
   selector: 'app-delete-account-dialog',
   template: `
