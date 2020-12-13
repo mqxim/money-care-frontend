@@ -16,6 +16,7 @@ import {UIBeginLoadingAction, UIEndLoadingAction} from '../../../store/ui/ui.act
 import {selectAccountReport} from '../../../store/account-report/account-report.selectors';
 import AccountReport from '../../../models/AccountReport';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import Category from '../../../models/Category';
 
 export interface CardSettings {
   backgroundColor: string;
@@ -180,6 +181,10 @@ export class AccountReportComponent implements OnInit {
       }));
       this.uiStore$.dispatch(new UIEndLoadingAction());
     }, 1000);
+  }
+
+  getCategoryColor(name: string): string {
+    return Category.getColorForCategory(name);
   }
 
   ngOnInit(): void {

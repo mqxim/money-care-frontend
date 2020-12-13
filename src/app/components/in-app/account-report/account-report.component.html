@@ -91,7 +91,7 @@
   <div class="transactions-list">
     <mat-card class="transaction" *ngFor="let transaction of accountReport.transactions">
       <mat-card-header>
-        <div mat-card-avatar style="background-color: aqua"></div>
+        <div mat-card-avatar [style.backgroundColor]="getCategoryColor(transaction.category)"></div>
         <mat-card-title>
           <span>{{ transaction.category }}</span>
         </mat-card-title>
