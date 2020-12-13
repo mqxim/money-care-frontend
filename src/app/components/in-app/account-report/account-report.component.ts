@@ -152,7 +152,9 @@ export class AccountReportComponent implements OnInit {
       data: {
         accountId: this.id
       }
-    });
+    })
+      .afterClosed()
+      .subscribe((d) => d.submit ? this.onLoadReport() : null);
   }
 
   onDeleteTransaction(accountId: string, transactionId: string): void {
@@ -195,7 +197,7 @@ export class AccountReportComponent implements OnInit {
   selector: 'app-create-transaction-dialog',
   template: `
     <div>
-      <app-create-transaction-form></app-create-transaction-form>
+      <app-create-transaction-form (whenClose)="dialogRef.close({submit: false})" (whenSubmit)="dialogRef.close({submit: true})"></app-create-transaction-form>
     </div>`
 })
 export class CreateTransactionDialogComponent implements OnInit {

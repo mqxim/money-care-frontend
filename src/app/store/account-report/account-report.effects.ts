@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {
   AccountReportActionsTypes,
-  AccountReportLoaded,
+  AccountReportLoaded, CreateAccountTransactionAction, CreateAccountTransactionFailedAction, CreateAccountTransactionLoadedAction,
   DeleteAccountTransactionAction, DeleteTransactionFailedAction, DeleteTransactionLoadedAction,
   FailedLoadAccountReport,
   LoadAccountReportAction
@@ -51,7 +51,7 @@ export class AccountReportEffects {
           transactionId: action.payload.transactionId,
         })
           .pipe(
-            map (() => new DeleteTransactionLoadedAction({
+            map(() => new DeleteTransactionLoadedAction({
               accountId: action.payload.accountId,
               transactionId: action.payload.transactionId,
             })),
@@ -60,6 +60,25 @@ export class AccountReportEffects {
               transactionId: action.payload.transactionId,
             })))
           );
+      })
+    );
+  }
+
+  @Effect()
+  createTransaction(): Observable<any> {
+    return this.actions$.pipe(
+      ofType<CreateAccountTransactionAction>(AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION),
+      exhaustMap((action) => {
+        return this.accountService.createTransaction({
+          accountId: action.payload.accountId,
+          dateString: action.payload.dateTime,
+          category: action.payload.category,
+          cost: action.payload.cost,
+          comment: action.payload.comment,
+        }).pipe(
+          map(() => new CreateAccountTransactionLoadedAction()),
+          catchError(() => of(new CreateAccountTransactionFailedAction()))
+        );
       })
     );
   }

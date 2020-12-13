@@ -27,7 +27,7 @@
         <div class="card-content-counter">
           <span
             [ngClass]="accountReport.incomes > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
-          >{{accountReport.incomes > 0 ? '+' : (accountReport.incomes < 0 ? '-' : '')}} {{getAbsolute(accountReport.incomes)}} {{accountReport.currency.code}}</span>
+          >{{getAbsolute(accountReport.incomes)}} {{accountReport.currency.code}}</span>
         </div>
       </div>
     </mat-grid-tile>
@@ -42,7 +42,7 @@
         <div class="card-content-counter">
           <span
             [ngClass]="accountReport.expenses > 0 ? 'card-content-counter-positive' : 'card-content-counter-negative'"
-          >{{accountReport.expenses > 0 ? '+' : (accountReport.expenses < 0 ? '-' : '')}} {{getAbsolute(accountReport.expenses)}} {{accountReport.currency.code}}</span>
+          >{{getAbsolute(accountReport.expenses)}} {{accountReport.currency.code}}</span>
         </div>
       </div>
     </mat-grid-tile>
@@ -101,7 +101,7 @@
         <div class="transaction-content">
           <div>{{transaction.comment}}</div>
           <div class="transaction-content-money-counter">
-            <h1>{{transaction.cost}}&nbsp;{{accountReport.currency.code}}</h1>
+            <h1 [ngClass]="transaction.cost > 0 ? 'card-content-counter-positive' : ''">{{transaction.cost > 0 ? '+' : '-'}}{{getAbsolute(transaction.cost)}}&nbsp;{{accountReport.currency.code}}</h1>
           </div>
         </div>
       </mat-card-content>

@@ -26,7 +26,7 @@ export function accountReportReduces(state = initialState, action: AccountReport
           state.accountReport.startDate,
           state.accountReport.endDate,
           state.accountReport.transactions.slice().sort((a, b) => {
-            return b.cost - a.cost;
+            return Math.abs(b.cost) - Math.abs(a.cost);
           }),
           state.accountReport.currentBalance,
           state.accountReport.incomes,

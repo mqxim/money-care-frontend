@@ -17,6 +17,28 @@ export default class AccountReportService extends BaseService {
     super();
   }
 
+  public createTransaction(transactInfo: {
+    accountId: string,
+    dateString: string,
+    category: string,
+    cost: number,
+    comment: string,
+  }): Observable<boolean> {
+    return this.http.post<boolean>(
+      `${this.baseUrl}/api/account/${transactInfo.accountId}/transactions/create`, {
+        Category: transactInfo.category,
+        Comment: transactInfo.comment,
+        Cost: transactInfo.cost,
+        CreateDate: transactInfo.dateString
+      }, {
+        headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+      }
+    )
+      .pipe(
+        map(() => true)
+      );
+  }
+
   public deleteTransaction(transactInfo: {
     accountId: string,
     transactionId: string,
@@ -84,7 +106,7 @@ export default class AccountReportService extends BaseService {
               expenses,
               periodBalance,
               new Account(
-                accountReport.account.id,
+                accountReport.account.accountId,
                 accountReport.account.name,
                 accountReport.account.currencyId,
                 new Date(accountReport.account.createDate)

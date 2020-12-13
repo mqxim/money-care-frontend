@@ -2,9 +2,43 @@
   <h1>💳 Create new transaction</h1>
   <form [formGroup]="form">
     <mat-form-field class="full-width-input">
+      <mat-label>Category</mat-label>
+      <mat-chip-list #list aria-label="Fruit selection">
+        <mat-chip
+          *ngFor="let category of selectedCategories"
+          [selectable]="selectable"
+          [removable]="true"
+          (removed)="remove(category)"
+        >{{category}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          [placeholder]="selectedCategories.length === 0 ? 'Category' : ''"
+          #categoryInput
+          [matChipInputFor]="list"
+          [formControl]="form.controls.category"
+          formControlName="category"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="false"
+          (matChipInputTokenEnd)="addCategory($event)"
+        >
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option
+          [disabled]="selectedCategories.indexOf(category.name) !== -1"
+          *ngFor="let category of categories" [value]="category.name">
+          <span
+            [style.backgroundColor]="category.color"
+            class="category-selector"></span>{{category.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="full-width-input">
       <input matInput formControlName="cost" type="number" class="input-cost">
       <span matPrefix>
-        <button mat-button mat-icon-button class="currency-button" [matMenuTriggerFor]="aboveMenu">{{currency?.code}}</button>
+        <button mat-button mat-icon-button class="currency-button"
+                [matMenuTriggerFor]="aboveMenu">{{currency?.code}}</button>
         <mat-menu #aboveMenu="matMenu" yPosition="above">
           <button *ngFor="let c of currencies" mat-menu-item (click)="currency = c">{{c.name}} {{c.code}}</button>
         </mat-menu>
@@ -15,7 +49,7 @@
           <span *ngIf="form.controls.isExpense.value === true">💸 Expense</span>
         </mat-slide-toggle>
       </span>
-      <mat-error *ngIf="form.controls.cost.invalid">Please, use switcher to specify transaction type</mat-error>
+      <mat-error *ngIf="form.controls.cost.invalid">Cost is required</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-input">
       <mat-label>Comment</mat-label>

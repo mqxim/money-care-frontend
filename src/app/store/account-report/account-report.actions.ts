@@ -9,7 +9,11 @@ export enum AccountReportActionsTypes {
   SORT_ACCOUNT_TRANSACTIONS_BY_RECENT = '[AccountReport] SORT_ACCOUNT_TRANSACTIONS_BY_RECENT',
   DELETE_ACCOUNT_TRANSACTION = '[AccountReport] DELETE_ACCOUNT_TRANSACTION',
   DELETE_ACCOUNT_TRANSACTION_LOADED = '[AccountReport] DELETE_ACCOUNT_TRANSACTION_LOADED',
-  DELETE_ACCOUNT_TRANSACTION_FAILED = '[AccountReport] DELETE_ACCOUNT_TRANSACTION_FAILED'
+  DELETE_ACCOUNT_TRANSACTION_FAILED = '[AccountReport] DELETE_ACCOUNT_TRANSACTION_FAILED',
+  CREATE_ACCOUNT_TRANSACTION = '[AccountReport] CREATE_ACCOUNT_TRANSACTION',
+  CREATE_ACCOUNT_TRANSACTION_LOADED = '[AccountReport] CREATE_ACCOUNT_TRANSACTION_LOADED',
+  CREATE_ACCOUNT_TRANSACTION_FAILED = '[AccountReport] CREATE_ACCOUNT_TRANSACTION_FAILED',
+
 }
 
 export class LoadAccountReportAction implements Action {
@@ -74,6 +78,27 @@ export class DeleteTransactionFailedAction implements Action {
   }
 }
 
+export class CreateAccountTransactionAction implements Action {
+  readonly type = AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION;
+
+  constructor(public payload: {
+    accountId: string,
+    category: string,
+    cost: number,
+    comment: string,
+    dateTime: string
+  }) {
+  }
+}
+
+export class CreateAccountTransactionFailedAction implements Action {
+  readonly type = AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION_FAILED;
+}
+
+export class CreateAccountTransactionLoadedAction implements Action {
+  readonly type = AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION_LOADED;
+}
+
 type AccountReportActions = LoadAccountReportAction
   | AccountReportLoaded
   | FailedLoadAccountReport
@@ -82,6 +107,9 @@ type AccountReportActions = LoadAccountReportAction
   | DeleteAccountTransactionAction
   | DeleteTransactionLoadedAction
   | DeleteTransactionFailedAction
+  | CreateAccountTransactionAction
+  | CreateAccountTransactionLoadedAction
+  | CreateAccountTransactionFailedAction
   ;
 
 export {
