@@ -1,0 +1,29 @@
+<div>
+  <h1>💳 Create new transaction</h1>
+  <form [formGroup]="form">
+    <mat-form-field class="full-width-input">
+      <input matInput formControlName="cost" type="number" class="input-cost">
+      <span matPrefix>
+        <button mat-button mat-icon-button class="currency-button" [matMenuTriggerFor]="aboveMenu">{{currency?.code}}</button>
+        <mat-menu #aboveMenu="matMenu" yPosition="above">
+          <button *ngFor="let c of currencies" mat-menu-item (click)="currency = c">{{c.name}} {{c.code}}</button>
+        </mat-menu>
+      </span>
+      <span matSuffix>
+        <mat-slide-toggle color="primary" formControlName="isExpense">
+          <span *ngIf="form.controls.isExpense.value === false">💰 Income</span>
+          <span *ngIf="form.controls.isExpense.value === true">💸 Expense</span>
+        </mat-slide-toggle>
+      </span>
+      <mat-error *ngIf="form.controls.cost.invalid">Please, use switcher to specify transaction type</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width-input">
+      <mat-label>Comment</mat-label>
+      <textarea matInput formControlName="comment" class="comment"></textarea>
+    </mat-form-field>
+    <div class="form-controls">
+      <button mat-raised-button (click)="onClose()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()">Create</button>
+    </div>
+  </form>
+</div>

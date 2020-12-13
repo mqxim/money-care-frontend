@@ -55,7 +55,6 @@ export function accountReportReduces(state = initialState, action: AccountReport
         ),
       };
     }
-    case AccountReportActionsTypes.FAILED_LOAD_ACCOUNT_REPORT:
     default: {
       return state;
     }

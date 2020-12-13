@@ -1,0 +1,30 @@
+mat-form-field {
+  display: block;
+}
+
+.form-controls {
+  text-align: right;
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+input.input-cost::-webkit-outer-spin-button,
+input.input-cost::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.input-cost {
+  -moz-appearance: textfield;
+}
+
+.comment {
+  resize: none;
+}
+
+.currency-button {
+  height: 2.5em;
+  width: 2.5em;
+  margin-bottom: 3px;
+}

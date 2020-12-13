@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {AccountReportState} from '../../../store/account-report/account-report.reducer';
 import {ActionsSubject, select, Store} from '@ngrx/store';
@@ -8,13 +8,14 @@ import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {
   AccountReportActionsTypes,
-  AccountReportLoaded, FailedLoadAccountReport,
+  AccountReportLoaded, DeleteAccountTransactionAction, DeleteTransactionLoadedAction, FailedLoadAccountReport,
   LoadAccountReportAction, SortAccountTransactionsByRecentAction, SortAccountTransactionsBySignificantAction
 } from '../../../store/account-report/account-report.actions';
 import {UIState} from '../../../store/ui/ui.reducer';
 import {UIBeginLoadingAction, UIEndLoadingAction} from '../../../store/ui/ui.actions';
 import {selectAccountReport} from '../../../store/account-report/account-report.selectors';
 import AccountReport from '../../../models/AccountReport';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 export interface CardSettings {
   backgroundColor: string;
@@ -44,11 +45,11 @@ export class AccountReportComponent implements OnInit {
     startDate: new FormControl((() => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), 1);
-    })()),
+    })(), [Validators.required]),
     endDate: new FormControl((() => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-    })())
+    })(), [Validators.required])
   });
 
   accountReport: AccountReport | null;
@@ -60,9 +61,9 @@ export class AccountReportComponent implements OnInit {
     private accountReportStore$: Store<AccountReportState>,
     private uiStore$: Store<UIState>,
     private actions$: ActionsSubject,
+    private dialog: MatDialog,
   ) {
-
-    accountReportStore$.pipe(select(selectAccountReport)).subscribe((d) => this.accountReport = d);
+    this.accountReportStore$.pipe(select(selectAccountReport)).subscribe((d) => this.accountReport = d);
 
     activateRoute.params.subscribe(params => {
       this.id = params.id;
@@ -86,6 +87,30 @@ export class AccountReportComponent implements OnInit {
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.uiStore$.dispatch(new UIEndLoadingAction()));
+
+    this.actions$
+      .pipe(
+        ofType<DeleteTransactionLoadedAction>(AccountReportActionsTypes.DELETE_ACCOUNT_TRANSACTION_LOADED),
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.onLoadReport();
+      });
+  }
+
+  onLoadReport(): void {
+    if (!this.form.controls.startDate.value || !this.form.controls.endDate.value) {
+      return;
+    }
+
+    this.uiStore$.dispatch(new UIBeginLoadingAction());
+    setTimeout(() => {
+      this.accountReportStore$.dispatch(new LoadAccountReportAction({
+        accountId: this.id,
+        startDate: this.form.controls.startDate.value.toISOString(),
+        endDate: this.form.controls.endDate.value.toISOString(),
+      }));
+    }, 1000);
   }
 
   onAccountChange(): void {
@@ -99,7 +124,7 @@ export class AccountReportComponent implements OnInit {
     }, 1000);
   }
 
-  getAbsolute(x: number): number{
+  getAbsolute(x: number): number {
     return Math.abs(x);
   }
 
@@ -119,6 +144,84 @@ export class AccountReportComponent implements OnInit {
     }, 1000);
   }
 
+  onCreateTransaction(): void {
+    this.dialog.open(CreateTransactionDialogComponent, {
+      width: '700px',
+      minWidth: '310px',
+      data: {
+        accountId: this.id
+      }
+    });
+  }
+
+  onDeleteTransaction(accountId: string, transactionId: string): void {
+    this.dialog.open(DeleteTransactionDialogComponent, {
+      width: '700px',
+      minWidth: '310px',
+      data: {
+        accountId,
+        transactionId,
+      }
+    })
+      .afterClosed()
+      .subscribe(result => {
+        if (result.submit === true) {
+          this.deleteTransaction(accountId, transactionId);
+        }
+      });
+  }
+
+  deleteTransaction(accountId: string, transactionId: string): void {
+    this.uiStore$.dispatch(new UIBeginLoadingAction());
+    setTimeout(() => {
+      this.accountReportStore$.dispatch(new DeleteAccountTransactionAction({
+        accountId,
+        transactionId
+      }));
+      this.uiStore$.dispatch(new UIEndLoadingAction());
+    }, 1000);
+  }
+
   ngOnInit(): void {
+  }
+}
+
+@Component({
+  selector: 'app-create-transaction-dialog',
+  template: `
+    <div>
+      <app-create-transaction-form></app-create-transaction-form>
+    </div>`
+})
+export class CreateTransactionDialogComponent implements OnInit {
+  constructor(
+    public dialogRef: MatDialogRef<CreateTransactionDialogComponent>,
+  ) {
+  }
+
+  ngOnInit(): void {
+  }
+}
+
+@Component({
+  selector: 'app-delete-transaction-dialog',
+  template: `
+    <div>
+      <app-delete-transaction-form
+        (whenSubmit)="onSubmitDelete()"
+        (whenClose)="dialogRef.close({submit: false})"
+      >
+      </app-delete-transaction-form>
+    </div>`
+})
+export class DeleteTransactionDialogComponent implements OnInit {
+  constructor(public dialogRef: MatDialogRef<DeleteTransactionDialogComponent>) {
+  }
+
+  ngOnInit(): void {
+  }
+
+  onSubmitDelete(): void {
+    this.dialogRef.close({submit: true});
   }
 }

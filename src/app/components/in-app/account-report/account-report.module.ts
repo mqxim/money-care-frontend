@@ -1,13 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AccountReportComponent } from './account-report.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AccountReportComponent, CreateTransactionDialogComponent, DeleteTransactionDialogComponent} from './account-report.component';
 import {AngularMaterialModule} from '../../../angular-material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import {CreateTransactionFormComponent} from './create-transaction-form/create-transaction-form.component';
+import {DeleteTransactionFormComponent} from './delete-transaction-form/delete-transaction-form.component';
 
 
 @NgModule({
-  declarations: [AccountReportComponent],
+  declarations: [
+    AccountReportComponent,
+    CreateTransactionFormComponent,
+    CreateTransactionDialogComponent,
+    DeleteTransactionFormComponent,
+    DeleteTransactionDialogComponent
+  ],
   imports: [
     CommonModule,
     AngularMaterialModule,
@@ -15,4 +22,5 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
   ]
 })
-export class AccountReportModule { }
+export class AccountReportModule {
+}

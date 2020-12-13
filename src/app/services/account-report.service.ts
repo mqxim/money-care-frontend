@@ -17,6 +17,27 @@ export default class AccountReportService extends BaseService {
     super();
   }
 
+  public deleteTransaction(transactInfo: {
+    accountId: string,
+    transactionId: string,
+  }): Observable<boolean> {
+    return this.http.post<boolean>(
+      `${this.baseUrl}/api/account/${transactInfo.accountId}/transactions/${transactInfo.transactionId}/delete`, {}, {
+        headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+      }
+    )
+      .pipe(
+        map((response) => {
+          const r = response as any;
+          if (r && 'status' in r) {
+            return r.status === 'OK';
+          }
+
+          throw new Error('Invalid response');
+        })
+      );
+  }
+
   public getAccountReport(
     accountReportQuery: {
       accountId: string,

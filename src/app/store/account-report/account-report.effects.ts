@@ -1,7 +1,13 @@
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {AccountReportActionsTypes, AccountReportLoaded, FailedLoadAccountReport, LoadAccountReportAction} from './account-report.actions';
+import {
+  AccountReportActionsTypes,
+  AccountReportLoaded,
+  DeleteAccountTransactionAction, DeleteTransactionFailedAction, DeleteTransactionLoadedAction,
+  FailedLoadAccountReport,
+  LoadAccountReportAction
+} from './account-report.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import AccountReportService from '../../services/account-report.service';
 
@@ -14,8 +20,7 @@ export class AccountReportEffects {
   }
 
   @Effect()
-  fetchReport(): Observable<any>
-  {
+  fetchReport(): Observable<any> {
     return this.actions$.pipe(
       ofType<LoadAccountReportAction>(AccountReportActionsTypes.LOAD_ACCOUNT_REPORT),
       exhaustMap((action) => {
@@ -28,10 +33,32 @@ export class AccountReportEffects {
             map((r) => new AccountReportLoaded({
               accountReport: r
             })),
-            catchError((e) => {
-              console.log(e);
+            catchError(() => {
               return of(new FailedLoadAccountReport());
             })
+          );
+      })
+    );
+  }
+
+  @Effect()
+  deleteTransaction(): Observable<any> {
+    return this.actions$.pipe(
+      ofType<DeleteAccountTransactionAction>(AccountReportActionsTypes.DELETE_ACCOUNT_TRANSACTION),
+      exhaustMap((action) => {
+        return this.accountService.deleteTransaction({
+          accountId: action.payload.accountId,
+          transactionId: action.payload.transactionId,
+        })
+          .pipe(
+            map (() => new DeleteTransactionLoadedAction({
+              accountId: action.payload.accountId,
+              transactionId: action.payload.transactionId,
+            })),
+            catchError(() => of(new DeleteTransactionFailedAction({
+              accountId: action.payload.accountId,
+              transactionId: action.payload.transactionId,
+            })))
           );
       })
     );
