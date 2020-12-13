@@ -91,9 +91,9 @@
   <div class="transactions-list">
     <mat-card class="transaction" *ngFor="let transaction of accountReport.transactions">
       <mat-card-header>
-        <div mat-card-avatar [style.backgroundColor]="getCategoryColor(transaction.category)"></div>
+        <div mat-card-avatar [style.backgroundColor]="transaction.category ? getCategoryColor(transaction.category) : '#000'"></div>
         <mat-card-title>
-          <span>{{ transaction.category }}</span>
+          <span>{{ transaction.category ? transaction.category : 'No category' }}</span>
         </mat-card-title>
         <mat-card-subtitle>{{ transaction.createDate | date : 'EEEE, MMMM d, y, HH:mm' }}</mat-card-subtitle>
       </mat-card-header>
