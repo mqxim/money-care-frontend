@@ -13,9 +13,9 @@
     <p class="user-icon" [matMenuTriggerFor]="menu" attr.data-letters="{{userInitials}}"></p>
     <mat-menu class="user-menu" #menu="matMenu" yPosition="above">
       <div class="user-menu-width"></div>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="navigateToProfile()">
         <mat-icon>account_circle</mat-icon>
-        <span>Edit profile</span>
+        <span>My profile</span>
       </button>
       <button mat-menu-item (click)="handleOnSignOut()">
         <mat-icon>exit_to_app</mat-icon>

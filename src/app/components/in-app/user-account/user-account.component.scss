@@ -1,0 +1,66 @@
+$USER_ICON_SQUARE_SIZE: 2em;
+
+.user-info-container {
+  margin: 10px;
+  padding: 10px;
+
+  background-color: #fff;
+  border-radius: 4px;
+
+  min-height: 250px;
+}
+
+.user-avatar {
+  text-align: center;
+  margin: 0 auto 10px;
+
+  width: fit-content;
+  height: fit-content;
+}
+
+.user-icon {
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: block;
+}
+
+[data-letters]:before {
+  content: attr(data-letters);
+  display: block;
+  font-size: 5em !important;
+  width: $USER_ICON_SQUARE_SIZE;
+  height: $USER_ICON_SQUARE_SIZE;
+  line-height: $USER_ICON_SQUARE_SIZE;
+  text-align: center;
+  border-radius: 50%;
+  background: #768fff;
+  vertical-align: middle;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.username {
+  text-align: center;
+  font-size: 25px;
+  line-height: 35px;
+}
+
+.account-item {
+  position: relative;
+}
+
+.account-currency {
+  color: rgba(0,0,0,.54);
+}
+
+.account-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  @media screen and (max-width: 320px) {
+    width: 200px;
+  }
+}

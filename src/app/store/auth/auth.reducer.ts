@@ -35,6 +35,12 @@ export function authReducer(state = initialState, action: AuthAction): AuthState
         user: null
       };
     }
+    case AuthActionsTypes.CHANGE_USERINFO_SUCCESS: {
+      return {
+        isAuthenticated: true,
+        user: action.payload.user
+      };
+    }
     default: {
       return state;
     }

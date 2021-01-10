@@ -1,0 +1,35 @@
+<div>
+  <div class="user-info-container">
+    <div class="user-avatar">
+      <p class="user-icon" attr.data-letters="{{userInitials}}"></p>
+    </div>
+    <div class="username">{{userName}}</div>
+    <mat-divider></mat-divider>
+    <div>
+      <button mat-menu-item *ngFor="let i of accounts$ | async" class="account-item" (click)="navigateToAccount(i.id)">
+        <div style="line-height: 48px;">
+          <div mat-line class="account-name" style="float: left; padding: 0 23.5px 0 0; font-size: 25px">
+            <span class="account-currency">{{getWalletCurrencySign(i.currencyId)}}</span>
+          </div>
+          <div style="float: left;">
+            <span>{{i.name}}</span>
+          </div>
+          <div style="clear: both;"></div>
+        </div>
+      </button>
+      <mat-divider *ngIf="(accounts$ | async).length > 0"></mat-divider>
+      <button mat-menu-item (click)="onEditProfile()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit user information</span>
+      </button>
+      <button mat-menu-item (click)="onChangePassword()">
+        <mat-icon>security</mat-icon>
+        <span>Change password</span>
+      </button>
+      <button mat-menu-item (click)="onLogout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+</div>

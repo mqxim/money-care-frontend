@@ -32,4 +32,9 @@ export default class TokenService {
   public static deleteToken(): void {
     localStorage.removeItem('token');
   }
+
+  public static changePassword(password: string): void {
+    const token = this.extractCredentialsFromToken(this.getToken());
+    this.saveToken(token.email, password);
+  }
 }

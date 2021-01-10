@@ -2,8 +2,14 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
   AuthActionsTypes,
+  ChangePasswordAction,
+  ChangePasswordFailureAction,
+  ChangePasswordSuccessAction, ChangeUserinfoAction,
+  ChangeUserinfoFailureAction,
+  ChangeUserinfoSuccessAction,
   SignInFailureAction,
-  SignInSuccessAction, SignUpFailureAction,
+  SignInSuccessAction,
+  SignUpFailureAction,
   SignUpSuccessAction,
   TrySignInAction,
   TrySignUpAction
@@ -78,5 +84,40 @@ export class AuthEffects {
             })
           )
       ));
+  }
+
+  @Effect()
+  changePassword(): Observable<any> {
+    return this.actions$.pipe(
+      ofType<ChangePasswordAction>(AuthActionsTypes.CHANGE_PASSWORD),
+      exhaustMap((action) => {
+        return this.authService.changePassword({
+          oldPassword: action.payload.oldPassword,
+          newPassword: action.payload.newPassword,
+          passwordConfirm: action.payload.newPasswordConfirm,
+        })
+          .pipe(
+            map(() => new ChangePasswordSuccessAction({password: action.payload.newPassword})),
+            catchError(() => of(new ChangePasswordFailureAction({})))
+          );
+      })
+    );
+  }
+
+  @Effect()
+  changeUserInfo(): Observable<any> {
+    return this.actions$.pipe(
+      ofType<ChangeUserinfoAction>(AuthActionsTypes.CHANGE_USERINFO),
+      exhaustMap((action) => {
+        return this.authService.changeUserInfo({
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+        })
+          .pipe(
+            map((u) => new ChangeUserinfoSuccessAction({user: u})),
+            catchError(() => of(new ChangeUserinfoFailureAction({})))
+          );
+      })
+    );
   }
 }
