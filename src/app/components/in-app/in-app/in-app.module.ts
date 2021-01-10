@@ -7,6 +7,7 @@ import {AngularMaterialModule} from '../../../angular-material.module';
 import {SidenavModule} from '../sidenav/sidenav.module';
 import {AccountReportModule} from '../account-report/account-report.module';
 import {ChooseAccountModule} from '../choose-account/choose-account.module';
+import {UserAccountModule} from '../user-account/user-account.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {ChooseAccountModule} from '../choose-account/choose-account.module';
     AccountReportModule,
     AngularMaterialModule,
     SidenavModule,
-    ChooseAccountModule
+    ChooseAccountModule,
+    UserAccountModule,
   ]
 })
 export class InAppModule {
