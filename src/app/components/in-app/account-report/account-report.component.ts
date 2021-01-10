@@ -126,7 +126,7 @@ export class AccountReportComponent implements OnInit {
   }
 
   getAbsolute(x: number): number {
-    return Math.abs(x);
+    return Math.round(Math.abs(x) * 100) / 100;
   }
 
   onSignificantSort(): void {
