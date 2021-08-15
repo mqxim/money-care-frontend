@@ -16,7 +16,6 @@ export enum AuthActionsTypes {
   CHANGE_USERINFO = '[Auth] CHANGE_USERINFO',
   CHANGE_USERINFO_SUCCESS = '[Auth] CHANGE_USERINFO_SUCCESS',
   CHANGE_USERINFO_FAILURE = '[Auth] CHANGE_USERINFO_FAILURE',
-
 }
 
 export class TrySignInAction implements Action {
