@@ -1,107 +1,62 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import User from '../models/User';
 import BaseService from './base.service';
-import {first, last, map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import TokenService from './token.service';
+import { CreateUserUseCase } from '../core/user/application/use-case/create-user.use-case';
+import { SignInUseCase } from '../core/user/application/use-case/sign-in.use-case';
+import { UpdateUserUseCase } from '../core/user/application/use-case/update-user.use-case';
+import { CredentialsService } from '../core/shared/domain/service/credentials.service';
 
 @Injectable({
   providedIn: 'root'
 })
 class AuthServices extends BaseService {
-  constructor(private http: HttpClient) {
+  constructor(
+    private authService: CredentialsService,
+    private signUpUseCase: CreateUserUseCase,
+    private signInUseCase: SignInUseCase,
+    private updateUserUseCase: UpdateUserUseCase,
+  ) {
     super();
   }
 
-  public trySignIn(email: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/api/authorize/sign-in`, {
-      Email: email,
-      Password: password
-    })
-      .pipe(
-        map(response => {
-          if (!('id' in response && 'firstName' in response && 'lastName' in response)) {
-            throw new Error('Response does not contains valid data');
-          }
-          return new User(
-            response.id,
-            response.firstName,
-            response.lastName
-          );
-        })
-      );
+  public async trySignIn(email: string, password: string): Promise<User | null> {
+    const response = await this.signInUseCase.exec({ email, password });
+
+    this.authService.authorize({
+      id: response.id,
+      email,
+      password,
+    });
+
+    return new User(response.id, response.firstName, response.lastName);
   }
 
-  public trySignUp(
-    {
-      firstName, lastName, email, password
-    }
-  ): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/api/authorize/sign-up`, {
-      FirstName: firstName,
-      LastName: lastName,
-      Email: email,
-      Password: password
-    })
-      .pipe(
-        map(response => {
-          if (!('id' in response && 'firstName' in response && 'lastName' in response)) {
-            throw new Error('Response does not contains valid data');
-          }
-
-          return new User(
-            response.id,
-            response.firstName,
-            response.lastName
-          );
-        })
-      );
+  public async trySignUp({ firstName, lastName, email, password }): Promise<User | null> {
+    const response = await this.signUpUseCase.exec({ firstName, lastName, email, password });
+    return new User(response.id, response.firstName, response.lastName);
   }
 
-  public changePassword({oldPassword, newPassword, passwordConfirm}): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/api/authorize/update-password`, {
-      OldPassword: oldPassword,
-      NewPassword: newPassword,
-      NewPasswordConfirm: passwordConfirm,
-    }, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
-    })
-      .pipe(
-        map(response => {
-          if (!('id' in response && 'firstName' in response && 'lastName' in response)) {
-            throw new Error('Response does not contains valid data');
-          }
+  public async changePassword({ password }): Promise<User> {
+    const user = this.authService.extractCredentials();
 
-          return new User(
-            response.id,
-            response.firstName,
-            response.lastName
-          );
-        })
-      );
+    const response = await this.updateUserUseCase.exec2({
+      emailOfUserToUpdate: user.email,
+      password
+    });
+
+    return new User(response.id, response.firstName, response.lastName);
   }
 
-  public changeUserInfo({firstName, lastName}): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/api/authorize/update-user-info`, {
-      FirstName: firstName,
-      LastName: lastName,
-    }, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
-    })
-      .pipe(
-        map(response => {
-          if (!('id' in response && 'firstName' in response && 'lastName' in response)) {
-            throw new Error('Response does not contains valid data');
-          }
+  public async changeUserInfo({ firstName, lastName }): Promise<User> {
+    const user = this.authService.extractCredentials();
 
-          return new User(
-            response.id,
-            response.firstName,
-            response.lastName
-          );
-        })
-      );
+    const response = await this.updateUserUseCase.exec1({
+      emailOfUserToUpdate: user.email,
+      firstName,
+      lastName
+    });
+
+    return new User(response.id, response.firstName, response.lastName);
   }
 }
 

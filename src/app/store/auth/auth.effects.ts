@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
   AuthActionsTypes,
   ChangePasswordAction,
@@ -14,10 +14,10 @@ import {
   TrySignInAction,
   TrySignUpAction
 } from './auth.actions';
-import {catchError, exhaustMap, map} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
-import {AuthServices} from '../../services/auth.service';
-import {HttpErrorResponse} from '@angular/common/http';
+import { exhaustMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AuthServices } from '../../services/auth.service';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
 @Injectable()
 export class AuthEffects {
@@ -29,28 +29,18 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType<TrySignInAction>(AuthActionsTypes.TRY_SIGN_IN),
       exhaustMap((action) =>
-        this.authService.trySignIn(action.payload.email, action.payload.password)
-          .pipe(
-            map(response => {
-              return new SignInSuccessAction({user: response, email: action.payload.email, password: action.payload.password});
-            }),
-            catchError((err) => {
-              const error = err as HttpErrorResponse;
-              const response = {reason: ''};
-              switch (error.status) {
-                case 404:
-                  response.reason = 'User not found';
-                  break;
-                case 401:
-                  response.reason = 'Wrong password';
-                  break;
-                default:
-                  response.reason = 'Server error';
-                  break;
+        fromPromise(new Promise(async (resolve) => {
+          try {
+            const user = await this.authService.trySignIn(action.payload.email, action.payload.password);
+
+            resolve(new SignInSuccessAction({
+                user, email: action.payload.email, password: action.payload.password
               }
-              return of(new SignInFailureAction({reason: response.reason}));
-            })
-          )
+            ));
+          } catch (e) {
+            resolve(new SignInFailureAction({ reason: e.message }));
+          }
+        }))
       ));
   }
 
@@ -58,31 +48,25 @@ export class AuthEffects {
   singUp(): Observable<any> {
     return this.actions$.pipe(
       ofType<TrySignUpAction>(AuthActionsTypes.TRY_SIGN_UP),
-      exhaustMap((action) =>
-        this.authService.trySignUp({
-          email: action.payload.email,
-          password: action.payload.password,
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName
-        })
-          .pipe(
-            map(response => {
-              return new SignUpSuccessAction({user: response, email: action.payload.email, password: action.payload.password});
-            }),
-            catchError((err) => {
-              const error = err as HttpErrorResponse;
-              const response = {reason: ''};
-              switch (error.status) {
-                case 400:
-                  response.reason = 'Bad request';
-                  break;
-                default:
-                  response.reason = 'Server error';
-                  break;
-              }
-              return of(new SignUpFailureAction({reason: response.reason}));
-            })
-          )
+      exhaustMap((action) => {
+          return fromPromise(new Promise(async (resolve) => {
+            try {
+              const user = await this.authService.trySignUp({
+                email: action.payload.email,
+                password: action.payload.password,
+                firstName: action.payload.firstName,
+                lastName: action.payload.lastName
+              });
+
+              resolve(new SignUpSuccessAction({
+                  user, email: action.payload.email, password: action.payload.password
+                }
+              ));
+            } catch (e) {
+              resolve(new SignUpFailureAction({ reason: e.message }));
+            }
+          }));
+        }
       ));
   }
 
@@ -91,15 +75,22 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType<ChangePasswordAction>(AuthActionsTypes.CHANGE_PASSWORD),
       exhaustMap((action) => {
-        return this.authService.changePassword({
-          oldPassword: action.payload.oldPassword,
-          newPassword: action.payload.newPassword,
-          passwordConfirm: action.payload.newPasswordConfirm,
-        })
-          .pipe(
-            map(() => new ChangePasswordSuccessAction({password: action.payload.newPassword})),
-            catchError(() => of(new ChangePasswordFailureAction({})))
-          );
+        return fromPromise(new Promise(async (resolve) => {
+          try {
+            if (action.payload.newPassword !== action.payload.newPasswordConfirm) {
+              resolve(new ChangePasswordFailureAction({}));
+              return;
+            }
+
+            await this.authService.changePassword({
+              password: action.payload.newPassword,
+            });
+
+            resolve(new ChangePasswordSuccessAction({ password: action.payload.newPassword }));
+          } catch (e) {
+            resolve(new ChangePasswordFailureAction({}));
+          }
+        }));
       })
     );
   }
@@ -109,15 +100,20 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType<ChangeUserinfoAction>(AuthActionsTypes.CHANGE_USERINFO),
       exhaustMap((action) => {
-        return this.authService.changeUserInfo({
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName,
-        })
-          .pipe(
-            map((u) => new ChangeUserinfoSuccessAction({user: u})),
-            catchError(() => of(new ChangeUserinfoFailureAction({})))
-          );
+        return fromPromise(new Promise(async (resolve) => {
+          try {
+            const user = await this.authService.changeUserInfo({
+              firstName: action.payload.firstName,
+              lastName: action.payload.lastName,
+            });
+
+            resolve(new ChangeUserinfoSuccessAction({ user }));
+          } catch (e) {
+            resolve(new ChangeUserinfoFailureAction({}));
+          }
+        }));
       })
     );
   }
 }
+

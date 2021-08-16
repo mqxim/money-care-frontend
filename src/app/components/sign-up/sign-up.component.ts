@@ -30,24 +30,14 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       firstName: new FormControl(null, [
         Validators.required,
-        (control) => /[-a-zA-ZЀ-ӿÀ-ÿĀ-ſƀ-ɏ']+$/.test(control.value) ? null : {firstName: true}
+        (control) => /[-a-zA-ZЀ-ӿÀ-ÿĀ-ſƀ-ɏ']+$/.test(control.value) ? null : { firstName: true }
       ]),
       lastName: new FormControl(null, [
         Validators.required,
-        (control) => /[-a-zA-ZЀ-ӿÀ-ÿĀ-ſƀ-ɏ']+$/.test(control.value) ? null : {lastName: true}
+        (control) => /[-a-zA-ZЀ-ӿÀ-ÿĀ-ſƀ-ɏ']+$/.test(control.value) ? null : { lastName: true }
       ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      passwordRepeat: new FormControl(null, [])
-    }, (control) => {
-      const ctrl = control as FormGroup;
-      if (ctrl.controls.password.value === ctrl.controls.passwordRepeat.value) {
-        return null;
-      }
-
-      return {
-        passwordRepeatDoesNotMatch: 'Password does not match password repeat'
-      };
+      email: new FormControl(null, [ Validators.required, Validators.email ]),
+      password: new FormControl(null, [ Validators.required, Validators.minLength(8) ]),
     });
 
     this.store$.dispatch(new SignOutAction());
@@ -101,6 +91,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   showErrorMessage(): void {
     this.failedToCreateAccountMessage = true;
+
     setTimeout(() => this.failedToCreateAccountMessage = false, 5000);
   }
 }

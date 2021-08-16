@@ -1,10 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {AuthState} from '../../../../store/auth/auth.reducer';
-import {selectUser} from '../../../../store/auth/auth.selectors';
-import {map} from 'rxjs/operators';
-import {ChangeUserinfoAction} from '../../../../store/auth/auth.actions';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeUserinfoAction } from '../../../../store/auth/auth.actions';
+import { AuthState } from '../../../../store/auth/auth.reducer';
+import { select, Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { selectUser } from '../../../../store/auth/auth.selectors';
 
 @Component({
   template: `
@@ -31,7 +31,7 @@ import {ChangeUserinfoAction} from '../../../../store/auth/auth.actions';
     </div>
   `,
   selector: 'app-change-user-info',
-  styleUrls: ['./change-user-info.component.scss']
+  styleUrls: [ './change-user-info.component.scss' ]
 })
 export class ChangeUserInfoComponent implements OnInit {
   @Output() whenClose = new EventEmitter();
@@ -55,8 +55,8 @@ export class ChangeUserInfoComponent implements OnInit {
 
     this.form = new FormGroup(
       {
-        firstName: new FormControl(fn, [Validators.required]),
-        lastName: new FormControl(ln, [Validators.required]),
+        firstName: new FormControl(fn, [ Validators.required ]),
+        lastName: new FormControl(ln, [ Validators.required ]),
       }
     );
   }
