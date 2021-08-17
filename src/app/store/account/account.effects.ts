@@ -1,6 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
   AccountActionsTypes, CreateAccountAction, CreateAccountSucceededAction,
   CurrenciesLoadedAction, DeleteAccountAction, DeleteAccountSucceededAction, FailedToCreateAccountAction, FailedToDeleteAccountAction,
@@ -9,7 +8,9 @@ import {
   LoadUserAccountsAction, RenameAccountAction, RenameAccountSucceededAction,
   UserAccountsLoadedAction
 } from './account.actions';
-import {catchError, exhaustMap, map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { exhaustMap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal-compatibility';
 import AccountService from '../../services/account.service';
 
 @Injectable()
@@ -24,18 +25,14 @@ export class AccountEffects {
   fetchAccount(): Observable<any> {
     return this.actions$.pipe(
       ofType<LoadUserAccountsAction>(AccountActionsTypes.LOAD_USER_ACCOUNTS),
-      exhaustMap(() =>
-        this.accountService
-          .getUserAccounts()
-          .pipe(
-            map((response) => {
-              return new UserAccountsLoadedAction({accounts: response});
-            }),
-            catchError(() => {
-              return of(new FailedToLoadUserAccountsAction());
-            })
-          )
-      )
+      exhaustMap(() => {
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.getUserAccounts()
+            .then((response) => resolve(new UserAccountsLoadedAction({ accounts: response })))
+            .catch(() => new FailedToLoadUserAccountsAction())
+          ;
+        }));
+      })
     );
   }
 
@@ -44,57 +41,59 @@ export class AccountEffects {
     return this.actions$.pipe(
       ofType<LoadUserAccountsAction>(AccountActionsTypes.LOAD_CURRENCIES),
       exhaustMap(() => {
-        return this.accountService.getCurrencies()
-          .pipe(
-            map(response => new CurrenciesLoadedAction({currencies: response})),
-            catchError(() => of(new FailedToLoadCurrenciesAction()))
-          );
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.getCurrencies()
+            .then((response) => resolve(new CurrenciesLoadedAction({ currencies: response })))
+            .catch(() => new FailedToLoadCurrenciesAction())
+          ;
+        }));
       })
     );
   }
 
   @Effect()
   createAccount(): Observable<any> {
-    return this.actions$
-      .pipe(
-        ofType<CreateAccountAction>(AccountActionsTypes.CREATE_ACCOUNT_ACTION),
-        exhaustMap((action) => {
-          return this.accountService.createAccount(action.payload.name, action.payload.currencyId)
-            .pipe(
-              map((response) => new CreateAccountSucceededAction({account: response})),
-              catchError(() => of(new FailedToCreateAccountAction()))
-            );
-        })
-      );
+    return this.actions$.pipe(
+      ofType<CreateAccountAction>(AccountActionsTypes.CREATE_ACCOUNT_ACTION),
+      exhaustMap((action) => {
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.createAccount(action.payload.name, action.payload.currencyId)
+            .then((response) => resolve(new CreateAccountSucceededAction({ account: response })))
+            .catch(() => new FailedToCreateAccountAction())
+          ;
+        }));
+      })
+    );
   }
 
   @Effect()
   deleteAccount(): Observable<any> {
-    return this.actions$
-      .pipe(
-        ofType<DeleteAccountAction>(AccountActionsTypes.DELETE_ACCOUNT),
-        exhaustMap(action => {
-          return this.accountService.deleteAccount(action.payload.accountId)
-            .pipe(
-              map(() => new DeleteAccountSucceededAction({deletedAccountId: action.payload.accountId})),
-              catchError(() => of(new FailedToDeleteAccountAction()))
-            );
-        })
-      );
+    return this.actions$.pipe(
+      ofType<DeleteAccountAction>(AccountActionsTypes.DELETE_ACCOUNT),
+      exhaustMap((action) => {
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.deleteAccount(action.payload.accountId)
+            .then(() => resolve(new DeleteAccountSucceededAction({ deletedAccountId: action.payload.accountId })))
+            .catch(() => new FailedToDeleteAccountAction())
+          ;
+        }));
+      })
+    );
   }
 
   @Effect()
   renameAccount(): Observable<any> {
-    return this.actions$
-      .pipe(
-        ofType<RenameAccountAction>(AccountActionsTypes.RENAME_ACCOUNT_ACTION),
-        exhaustMap(action => {
-          return this.accountService.renameAccount(action.payload.accountId, action.payload.newName)
-            .pipe(
-              map((a) => new RenameAccountSucceededAction({account: a})),
-              catchError(() => of(new FailedToRenameAccountAction()))
-            );
-        })
-      );
+    return this.actions$.pipe(
+      ofType<RenameAccountAction>(AccountActionsTypes.RENAME_ACCOUNT_ACTION),
+      exhaustMap((action) => {
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.renameAccount(action.payload.accountId, action.payload.newName)
+            .then((response) => resolve(new RenameAccountSucceededAction({ account: response })))
+            .catch(() => new FailedToRenameAccountAction())
+          ;
+        }));
+      })
+    );
   }
 }
+

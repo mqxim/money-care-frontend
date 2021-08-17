@@ -22,8 +22,9 @@ import { accountNode, accountReducer } from './store/account/account.reducer';
 import { AccountEffects } from './store/account/account.effects';
 import { accountReportNode, accountReportReduces } from './store/account-report/account-report.reducer';
 import { AccountReportEffects } from './store/account-report/account-report.effects';
-import { CoreUserModule } from './core/user/core-user.module';
-import { CoreSharedModule } from './core/shared/infrastructure/core-shared.module';
+import { CoreUserModule } from '../core/user/core-user.module';
+import { CoreSharedModule } from '../core/shared/infrastructure/core-shared.module';
+import { CoreAccountModule } from '../core/account/core-account.module';
 
 const effects = [
   AuthEffects,
@@ -57,6 +58,7 @@ const effects = [
 
     CoreUserModule,
     CoreSharedModule,
+    CoreAccountModule,
   ],
   providers: [],
   bootstrap: [ AppComponent ]

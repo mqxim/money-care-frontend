@@ -1,142 +1,78 @@
 import BaseService from './base.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import Account from '../models/Account';
-import TokenService from './token.service';
 import Currency from '../models/Currency';
+import { FindCurrenciesUseCase } from '../../core/account/application/use-case/find-currencies.use-case';
+import { FindAccountsUseCase } from '../../core/account/application/use-case/find-accounts.use-case';
+import { CredentialsService } from '../../core/shared/domain/service/credentials.service';
+import { CreateAccountUseCase } from '../../core/account/application/use-case/create-account.use-case';
+import { UpdateAccountsUseCase } from '../../core/account/application/use-case/update-account.use-case';
+import { DeleteAccountUseCase } from '../../core/account/application/use-case/delete-account.use-case';
+
+import { Injectable } from '@angular/core';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export default class AccountService extends BaseService {
-  constructor(private http: HttpClient) {
+  constructor(
+    private authService: CredentialsService,
+    private findCurrencyUseCase: FindCurrenciesUseCase,
+    private findAccountsUseCase: FindAccountsUseCase,
+    private createAccountUseCase: CreateAccountUseCase,
+    private updateAccountUseCase: UpdateAccountsUseCase,
+    private deleteAccountUseCase: DeleteAccountUseCase,
+  ) {
     super();
   }
 
-  public getUserAccounts(): Observable<Account[]> {
-    return this.http.post<Account[]>(`${this.baseUrl}/api/account/all`, {}, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
-    })
-      .pipe(
-        map(response => {
-          if (!Array.isArray(response)) {
-            throw new Error('Invalid response');
-          }
+  public getUserAccounts(): Promise<Account[]> {
+    const credentials = this.authService.extractCredentials();
 
-          const res = [];
-          for (const i of response) {
-            if (i == null) {
-              continue;
-            }
-
-            const accD = i as any;
-            const id = accD.hasOwnProperty('id') ? accD.id : null;
-            const name = accD.hasOwnProperty('name') ? accD.name : null;
-            const currencyId = accD.hasOwnProperty('currencyId') ? accD.currencyId : null;
-            const createDate = accD.hasOwnProperty('createDate') ? accD.createDate : null;
-
-            res.push(new Account(id ?? 0, name ?? '', currencyId ?? 0, new Date(createDate)));
-          }
-
-          return res;
-        }));
-  }
-
-  public createAccount(name: string, currencyId: string): Observable<Account> {
-    return this.http.post(`${this.baseUrl}/api/account/create`, {
-      Name: name,
-      CurrencyId: currencyId
-    }, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
-    })
-      .pipe(
-        map((response) => {
-          const r = response as any;
-          const id = r.hasOwnProperty('id') ? r.id : null;
-          const accName = r.hasOwnProperty('name') ? r.name : null;
-          const accCurrencyId = r.hasOwnProperty('currencyId') ? r.currencyId : null;
-          const createDate = r.hasOwnProperty('createDate') ? r.createDate : null;
-
-          if (!(id && accName && accCurrencyId && createDate)) {
-            throw new Error('Invalid response');
-          }
-
-          return new Account(id, accName, accCurrencyId, createDate);
-        })
-      );
-  }
-
-  public getCurrencies(): Observable<Currency[]> {
-    return this.http.post(`${this.baseUrl}/api/currency/all`, {}, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
-    })
-      .pipe(
-        map((response) => {
-            if (!Array.isArray(response)) {
-              throw new Error('Invalid response');
-            }
-
-            const result = [];
-            for (const i of response) {
-              if (i == null) {
-                continue;
-              }
-
-              const accD = i as any;
-              const id = accD.hasOwnProperty('id') ? accD.id : 0;
-              const name = accD.hasOwnProperty('name') ? accD.name : '';
-              const code = accD.hasOwnProperty('code') ? accD.code : '';
-              const usdRate = accD.hasOwnProperty('usdRate') ? accD.usdRate : 0;
-
-              result.push(new Currency(id, name, code, usdRate));
-            }
-
-            return result;
-          }
+    return this.findAccountsUseCase.exec({ ownerId: credentials.id })
+      .then(
+        (response) => response.accounts.map((a) =>
+          new Account(a.id, a.name, a.currencyId, a.createDate)
         )
       );
   }
 
-  public deleteAccount(accountId: string): Observable<boolean> {
-    return this.http.post(`${this.baseUrl}/api/account/${accountId}/delete`, {}, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+  public createAccount(name: string, currencyId: string): Promise<Account> {
+    return this.createAccountUseCase.exec({
+      currencyId, name
     })
-      .pipe(
-        map((response) => {
-          const r = response as any;
-          if (r?.status) {
-            if (r.status === 'OK') {
-              return true;
-            }
-          }
+      .then((response) => new Account(
+        response.account.id,
+        response.account.name,
+        response.account.currencyId,
+        response.account.createDate,
+      ));
+  }
 
-          throw new Error('Failed to delete account');
-        })
+  public getCurrencies(): Promise<Currency[]> {
+    return this.findCurrencyUseCase.exec()
+      .then((response) =>
+        response.currencies.map((c) => new Currency(c.id, c.name, c.code, c.usdRate)
+        )
       );
   }
 
-  public renameAccount(accountId: string, newName: string): Observable<Account> {
-    return this.http.post(`${this.baseUrl}/api/account/${accountId}/rename`, {
-      NewName: newName
-    }, {
-      headers: new HttpHeaders().append('Authorization', `Basic ${TokenService.getToken()}`)
+  public deleteAccount(accountId: string): Promise<boolean> {
+    return this.deleteAccountUseCase.exec({
+      id: accountId,
     })
-      .pipe(
-        map(response => {
-          const r = response as any;
-          const id = r.hasOwnProperty('id') ? r.id : null;
-          const accName = r.hasOwnProperty('name') ? r.name : null;
-          const accCurrencyId = r.hasOwnProperty('currencyId') ? r.currencyId : null;
-          const createDate = r.hasOwnProperty('createDate') ? r.createDate : null;
+      .then((response) => response.status);
+  }
 
-          if (!(id && accName && accCurrencyId && createDate)) {
-            throw new Error('Invalid response');
-          }
-
-          return new Account(id, accName, accCurrencyId, createDate);
-        })
-      );
+  public renameAccount(accountId: string, newName: string): Promise<Account> {
+    return this.updateAccountUseCase.exec({
+      id: accountId,
+      name: newName,
+    }).then((response) => new Account(
+      response.account.id,
+      response.account.name,
+      response.account.currencyId,
+      response.account.createDate,
+    ));
   }
 }
