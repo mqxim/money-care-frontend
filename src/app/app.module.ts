@@ -24,7 +24,7 @@ import { accountReportNode, accountReportReduces } from './store/account-report/
 import { AccountReportEffects } from './store/account-report/account-report.effects';
 import { CoreUserModule } from '../core/user/core-user.module';
 import { CoreSharedModule } from '../core/shared/infrastructure/core-shared.module';
-import { CoreAccountModule } from '../core/account/core-account.module';
+import { CoreAccountModule } from '../core/account/infrastructure/core-account.module';
 
 const effects = [
   AuthEffects,

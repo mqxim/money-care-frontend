@@ -1,4 +1,4 @@
-import Base64 from '../../../../app/utils/Base64';
+import Base64 from '../utils/Base64';
 import { Injectable } from '@angular/core';
 
 export interface Credentials {

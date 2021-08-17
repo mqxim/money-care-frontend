@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
-import User from '../models/User';
-import BaseService from './base.service';
-import { CreateUserUseCase } from '../../core/user/application/use-case/create-user.use-case';
-import { SignInUseCase } from '../../core/user/application/use-case/sign-in.use-case';
-import { UpdateUserUseCase } from '../../core/user/application/use-case/update-user.use-case';
-import { CredentialsService } from '../../core/shared/domain/service/credentials.service';
+import User from '../../models/User';
+import { CreateUserUseCase } from '../../../core/user/application/use-case/create-user.use-case';
+import { SignInUseCase } from '../../../core/user/application/use-case/sign-in.use-case';
+import { UpdateUserUseCase } from '../../../core/user/application/use-case/update-user.use-case';
+import { CredentialsService } from '../../../core/shared/domain/service/credentials.service';
 
 @Injectable({
   providedIn: 'root'
 })
-class AuthServices extends BaseService {
+class AuthServices {
   constructor(
     private authService: CredentialsService,
     private signUpUseCase: CreateUserUseCase,
     private signInUseCase: SignInUseCase,
     private updateUserUseCase: UpdateUserUseCase,
   ) {
-    super();
   }
 
   public async trySignIn(email: string, password: string): Promise<User | null> {

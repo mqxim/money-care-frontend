@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
-  AccountActionsTypes, CreateAccountAction, CreateAccountSucceededAction,
-  CurrenciesLoadedAction, DeleteAccountAction, DeleteAccountSucceededAction, FailedToCreateAccountAction, FailedToDeleteAccountAction,
+  AccountActionsTypes,
+  CreateAccountAction,
+  CreateAccountSucceededAction,
+  CurrenciesLoadedAction,
+  DeleteAccountAction,
+  DeleteAccountSucceededAction,
+  FailedToCreateAccountAction,
+  FailedToDeleteAccountAction,
   FailedToLoadCurrenciesAction,
-  FailedToLoadUserAccountsAction, FailedToRenameAccountAction,
-  LoadUserAccountsAction, RenameAccountAction, RenameAccountSucceededAction,
+  FailedToLoadUserAccountsAction,
+  FailedToRenameAccountAction,
+  LoadUserAccountsAction,
+  RenameAccountAction,
+  RenameAccountSucceededAction,
   UserAccountsLoadedAction
 } from './account.actions';
 import { Observable } from 'rxjs';
 import { exhaustMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import AccountService from '../../services/account.service';
+import { AccountService } from './account.service';
 
 @Injectable()
 export class AccountEffects {

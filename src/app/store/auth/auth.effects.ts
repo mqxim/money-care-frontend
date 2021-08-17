@@ -16,7 +16,7 @@ import {
 } from './auth.actions';
 import { exhaustMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AuthServices } from '../../services/auth.service';
+import { AuthServices } from './auth.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
 
 @Injectable()

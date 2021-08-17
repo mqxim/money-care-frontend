@@ -1,5 +1,5 @@
-import Base64 from '../utils/Base64';
-import {Injectable} from '@angular/core';
+import Base64 from '../../core/shared/domain/utils/Base64';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export default class TokenService {
@@ -20,8 +20,7 @@ export default class TokenService {
     localStorage.setItem('token', Base64.encode(`${email}:${password}`));
   }
 
-  public static getToken(): string|null
-  {
+  public static getToken(): string | null {
     return localStorage.getItem('token');
   }
 

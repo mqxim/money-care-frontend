@@ -1,20 +1,17 @@
-import BaseService from './base.service';
-import Account from '../models/Account';
-import Currency from '../models/Currency';
-import { FindCurrenciesUseCase } from '../../core/account/application/use-case/find-currencies.use-case';
-import { FindAccountsUseCase } from '../../core/account/application/use-case/find-accounts.use-case';
-import { CredentialsService } from '../../core/shared/domain/service/credentials.service';
-import { CreateAccountUseCase } from '../../core/account/application/use-case/create-account.use-case';
-import { UpdateAccountsUseCase } from '../../core/account/application/use-case/update-account.use-case';
-import { DeleteAccountUseCase } from '../../core/account/application/use-case/delete-account.use-case';
-
+import Account from '../../models/Account';
+import Currency from '../../models/Currency';
+import { FindCurrenciesUseCase } from '../../../core/account/application/use-case/find-currencies.use-case';
+import { FindAccountsUseCase } from '../../../core/account/application/use-case/find-accounts.use-case';
+import { CredentialsService } from '../../../core/shared/domain/service/credentials.service';
+import { CreateAccountUseCase } from '../../../core/account/application/use-case/create-account.use-case';
+import { UpdateAccountsUseCase } from '../../../core/account/application/use-case/update-account.use-case';
+import { DeleteAccountUseCase } from '../../../core/account/application/use-case/delete-account.use-case';
 import { Injectable } from '@angular/core';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export default class AccountService extends BaseService {
+export class AccountService {
   constructor(
     private authService: CredentialsService,
     private findCurrencyUseCase: FindCurrenciesUseCase,
@@ -23,7 +20,6 @@ export default class AccountService extends BaseService {
     private updateAccountUseCase: UpdateAccountsUseCase,
     private deleteAccountUseCase: DeleteAccountUseCase,
   ) {
-    super();
   }
 
   public getUserAccounts(): Promise<Account[]> {
