@@ -1,6 +1,5 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import User from '../../models/User';
-import TokenService from '../../services/token.service';
 
 export enum AuthActionsTypes {
   TRY_SIGN_IN = '[Auth] TRY_SIGN_IN',
@@ -32,7 +31,6 @@ export class SignInSuccessAction implements Action {
   readonly type = AuthActionsTypes.SIGN_IN_SUCCESS;
 
   constructor(public payload: { user: User, email: string, password: string, }) {
-    TokenService.saveToken(payload.email, payload.password);
   }
 }
 
@@ -61,7 +59,7 @@ export class SignUpSuccessAction implements Action {
   readonly type = AuthActionsTypes.SIGN_UP_SUCCESS;
 
   constructor(public payload: { user: User, email: string, password: string, }) {
-    TokenService.saveToken(payload.email, payload.password);
+
   }
 }
 
@@ -78,7 +76,6 @@ export class SignOutAction implements Action {
   readonly type = AuthActionsTypes.SIGN_OUT;
 
   constructor() {
-    TokenService.deleteToken();
   }
 }
 
@@ -95,7 +92,6 @@ export class ChangePasswordSuccessAction implements Action {
   constructor(
     public payload: { password: string }
   ) {
-    TokenService.changePassword(payload.password);
   }
 }
 

@@ -1,5 +1,6 @@
 import { UserRepository } from '../../domain/repository/user.repository';
 import { Injectable } from '@angular/core';
+import { CredentialsService } from '../../../shared/domain/service/credentials.service';
 
 class UserNotFoundException extends Error {
   constructor(email: string) {
@@ -29,6 +30,7 @@ export interface SignInResponse {
 export class SignInUseCase {
   constructor(
     private userRepository: UserRepository,
+    private authService: CredentialsService,
   ) {
   }
 
@@ -44,6 +46,12 @@ export class SignInUseCase {
     if (!user.comparePassword(request.password)) {
       throw new PasswordAreNotSameException();
     }
+
+    this.authService.authorize({
+      id: user.id,
+      email: user.getEmail(),
+      password: request.password,
+    });
 
     return {
       id: user.id,

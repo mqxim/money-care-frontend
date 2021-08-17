@@ -1,15 +1,21 @@
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
 import {
   AccountReportActionsTypes,
-  AccountReportLoaded, CreateAccountTransactionAction, CreateAccountTransactionFailedAction, CreateAccountTransactionLoadedAction,
-  DeleteAccountTransactionAction, DeleteTransactionFailedAction, DeleteTransactionLoadedAction,
+  AccountReportLoaded,
+  CreateAccountTransactionAction,
+  CreateAccountTransactionFailedAction,
+  CreateAccountTransactionLoadedAction,
+  DeleteAccountTransactionAction,
+  DeleteTransactionFailedAction,
+  DeleteTransactionLoadedAction,
   FailedLoadAccountReport,
   LoadAccountReportAction
 } from './account-report.actions';
-import {catchError, exhaustMap, map} from 'rxjs/operators';
-import AccountReportService from '../../services/account-report.service';
+import { AccountReportService } from './account-report.service';
+import { fromPromise } from 'rxjs/internal-compatibility';
+import { exhaustMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccountReportEffects {
@@ -24,19 +30,15 @@ export class AccountReportEffects {
     return this.actions$.pipe(
       ofType<LoadAccountReportAction>(AccountReportActionsTypes.LOAD_ACCOUNT_REPORT),
       exhaustMap((action) => {
-        return this.accountService.getAccountReport({
-          accountId: action.payload.accountId,
-          startDate: action.payload.startDate,
-          endDate: action.payload.endDate,
-        })
-          .pipe(
-            map((r) => new AccountReportLoaded({
-              accountReport: r
-            })),
-            catchError(() => {
-              return of(new FailedLoadAccountReport());
-            })
-          );
+        return fromPromise(
+          this.accountService.getAccountReport({
+            accountId: action.payload.accountId,
+            startDate: action.payload.startDate,
+            endDate: action.payload.endDate,
+          })
+            .then((r) => new AccountReportLoaded({ accountReport: r }))
+            .catch(() => new FailedLoadAccountReport())
+        );
       })
     );
   }
@@ -45,22 +47,21 @@ export class AccountReportEffects {
   deleteTransaction(): Observable<any> {
     return this.actions$.pipe(
       ofType<DeleteAccountTransactionAction>(AccountReportActionsTypes.DELETE_ACCOUNT_TRANSACTION),
-      exhaustMap((action) => {
-        return this.accountService.deleteTransaction({
+      exhaustMap((action) => fromPromise(
+        this.accountService.deleteTransaction({
           accountId: action.payload.accountId,
           transactionId: action.payload.transactionId,
         })
-          .pipe(
-            map(() => new DeleteTransactionLoadedAction({
-              accountId: action.payload.accountId,
-              transactionId: action.payload.transactionId,
-            })),
-            catchError(() => of(new DeleteTransactionFailedAction({
-              accountId: action.payload.accountId,
-              transactionId: action.payload.transactionId,
-            })))
-          );
-      })
+          .then(() => new DeleteTransactionLoadedAction({
+            accountId: action.payload.accountId,
+            transactionId: action.payload.transactionId,
+          }))
+          .catch(() => new DeleteTransactionFailedAction({
+            accountId: action.payload.accountId,
+            transactionId: action.payload.transactionId,
+          }))
+        )
+      )
     );
   }
 
@@ -69,15 +70,15 @@ export class AccountReportEffects {
     return this.actions$.pipe(
       ofType<CreateAccountTransactionAction>(AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION),
       exhaustMap((action) => {
-        return this.accountService.createTransaction({
-          accountId: action.payload.accountId,
-          dateString: action.payload.dateTime,
-          category: action.payload.category,
-          cost: action.payload.cost,
-          comment: action.payload.comment,
-        }).pipe(
-          map(() => new CreateAccountTransactionLoadedAction()),
-          catchError(() => of(new CreateAccountTransactionFailedAction()))
+        return fromPromise(this.accountService.createTransaction({
+            accountId: action.payload.accountId,
+            date: new Date(action.payload.dateTime),
+            categoryId: '1',
+            cost: action.payload.cost,
+            comment: action.payload.comment,
+          })
+            .then(() => new CreateAccountTransactionLoadedAction())
+            .catch(() => new CreateAccountTransactionFailedAction())
         );
       })
     );

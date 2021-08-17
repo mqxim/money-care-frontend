@@ -19,13 +19,6 @@ class AuthServices {
 
   public async trySignIn(email: string, password: string): Promise<User | null> {
     const response = await this.signInUseCase.exec({ email, password });
-
-    this.authService.authorize({
-      id: response.id,
-      email,
-      password,
-    });
-
     return new User(response.id, response.firstName, response.lastName);
   }
 

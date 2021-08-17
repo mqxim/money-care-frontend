@@ -11,6 +11,13 @@ import { AccountModelManager } from '../domain/model-manager/account.model-manag
 import { AccountModelManagerImpl } from './persistence/indexedDB/model-manager/account.model-manager';
 import { UpdateAccountsUseCase } from '../application/use-case/update-account.use-case';
 import { DeleteAccountUseCase } from '../application/use-case/delete-account.use-case';
+import { TransactionRepository } from '../domain/repository/transaction.repository';
+import { TransactionRepositoryImpl } from './persistence/indexedDB/repository/transaction.repository';
+import { TransactionModelManagerImpl } from './persistence/indexedDB/model-manager/transaction.model-manager';
+import { TransactionModelManager } from '../domain/model-manager/transaction.model-manager';
+import { CreateTransactionUseCase } from '../application/use-case/create-transaction.use-case';
+import { DeleteTransactionUseCase } from '../application/use-case/delete-transaction.use-case';
+import { GenerateAccountReportUseCase } from '../application/use-case/generate-account-report.use-case';
 
 @NgModule({
   imports: [
@@ -23,6 +30,9 @@ import { DeleteAccountUseCase } from '../application/use-case/delete-account.use
     CreateAccountUseCase,
     UpdateAccountsUseCase,
     DeleteAccountUseCase,
+    CreateTransactionUseCase,
+    DeleteTransactionUseCase,
+    GenerateAccountReportUseCase,
     {
       provide: CurrencyRepository,
       useClass: CurrencyRepositoryImpl,
@@ -34,7 +44,15 @@ import { DeleteAccountUseCase } from '../application/use-case/delete-account.use
     {
       provide: AccountModelManager,
       useClass: AccountModelManagerImpl,
-    }
+    },
+    {
+      provide: TransactionRepository,
+      useClass: TransactionRepositoryImpl,
+    },
+    {
+      provide: TransactionModelManager,
+      useClass: TransactionModelManagerImpl,
+    },
   ],
 })
 export class CoreAccountModule {

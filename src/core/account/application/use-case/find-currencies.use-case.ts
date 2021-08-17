@@ -1,9 +1,9 @@
-import { Currency } from '../dto/Currency';
+import { CurrencyDto } from '../dto/currency.dto';
 import { CurrencyRepository } from '../../domain/repository/currency.repository';
 import { Injectable } from '@angular/core';
 
 interface FindCurrenciesResponse {
-  currencies: Currency[];
+  currencies: CurrencyDto[];
 }
 
 @Injectable()

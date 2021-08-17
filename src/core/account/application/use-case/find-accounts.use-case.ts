@@ -1,5 +1,5 @@
 import { AccountRepository } from '../../domain/repository/account.repository';
-import { Account } from '../dto/Account';
+import { AccountDto } from '../dto/account.dto';
 import { Injectable } from '@angular/core';
 
 interface FindAccountsRequest {
@@ -7,7 +7,7 @@ interface FindAccountsRequest {
 }
 
 interface FindAccountsResponse {
-  accounts: Account[];
+  accounts: AccountDto[];
 }
 
 @Injectable()

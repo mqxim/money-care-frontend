@@ -1,4 +1,4 @@
-import { Account as AccountDto } from '../dto/Account';
+import { AccountDto } from '../dto/account.dto';
 import { AccountModelManager } from '../../domain/model-manager/account.model-manager';
 import { CredentialsService } from '../../../shared/domain/service/credentials.service';
 import { Account } from '../../domain/model/account.model';

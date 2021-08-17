@@ -45,8 +45,6 @@ export class UpdateUserUseCase {
 
     user.rename(request.firstName, request.lastName);
 
-    console.log(user);
-
     const updated = await this.userModelManager.save(user);
 
     return {

@@ -3,6 +3,7 @@ import { UserModelManager } from '../../domain/model-manager/user.model-manager'
 import { User } from '../../domain/model/user.model';
 import { generateId } from '../../../shared/domain/utils/random';
 import { Injectable } from '@angular/core';
+import { CredentialsService } from '../../../shared/domain/service/credentials.service';
 
 class UserWithSameEmailAlreadyExistsException extends Error {
   constructor(email: string) {
@@ -28,7 +29,8 @@ export interface CreateUserResponse {
 export class CreateUserUseCase {
   constructor(
     private userRepository: UserRepository,
-    private userModelManager: UserModelManager
+    private userModelManager: UserModelManager,
+    private authService: CredentialsService,
   ) {
   }
 
@@ -46,6 +48,12 @@ export class CreateUserUseCase {
       request.lastName,
       request.password
     ));
+
+    this.authService.authorize({
+      id: user.id,
+      email: user.getEmail(),
+      password: request.password,
+    });
 
     return {
       id: user.id,

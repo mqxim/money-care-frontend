@@ -1,5 +1,5 @@
 import { AccountRepository } from '../../domain/repository/account.repository';
-import { Account } from '../dto/Account';
+import { AccountDto } from '../dto/account.dto';
 import { AccountModelManager } from '../../domain/model-manager/account.model-manager';
 import { Injectable } from '@angular/core';
 import { CredentialsService } from '../../../shared/domain/service/credentials.service';
@@ -22,7 +22,7 @@ interface UpdateAccountRequest {
 }
 
 interface UpdateAccountResponse {
-  account: Account;
+  account: AccountDto;
 }
 
 @Injectable()
