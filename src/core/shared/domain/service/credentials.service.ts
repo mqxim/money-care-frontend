@@ -1,7 +1,8 @@
-import Base64 from '../../../../utils/Base64';
+import Base64 from '../../../../app/utils/Base64';
 import { Injectable } from '@angular/core';
 
 export interface Credentials {
+  id: string;
   email: string;
   password: string;
 }
@@ -9,9 +10,6 @@ export interface Credentials {
 @Injectable()
 export class CredentialsService {
   private readonly LOCAL_STORAGE_KEY = 'USER';
-
-  constructor() {
-  }
 
   public authorize(user: {
     id: string,
@@ -29,6 +27,7 @@ export class CredentialsService {
     const json = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_KEY));
 
     return {
+      id: json ? (json.id ?? null) : null,
       email: json ? (json.email ?? null) : null,
       password: json ? (json.password ?? null) : null,
     };

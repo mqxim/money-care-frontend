@@ -11,7 +11,9 @@
         (whenSignOut)="handleSignOut()"
         (whenMenuClick)="drawer.toggle()"
       ></app-menu>
-      <router-outlet></router-outlet>
+      <router-outlet
+        *ngIf="userFullName$ | async"
+      ></router-outlet>
     </div>
   </mat-drawer-container>
   <div class="loading-overlay" [ngClass]="(loadingType$ | async) > 0 ? 'loading-active' : ''"></div>

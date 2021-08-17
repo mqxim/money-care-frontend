@@ -31,6 +31,9 @@ export class UserAccountComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
   ) {
+  }
+
+  ngOnInit(): void {
     this.userFullName$.subscribe((u) => {
       this.userName = u;
 
@@ -43,10 +46,6 @@ export class UserAccountComponent implements OnInit {
     });
 
     this.accountsStore$.pipe(select(selectCurrencies)).subscribe((c) => this.currencies = c);
-  }
-
-  ngOnInit(): void {
-
   }
 
   onChangePassword(): void {
@@ -95,7 +94,6 @@ export class ChangePasswordFormComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
 
 @Component({

@@ -1,27 +1,28 @@
-import {Component, OnInit} from '@angular/core';
-import {ActionsSubject, select, Store} from '@ngrx/store';
-import {AuthState} from '../../../store/auth/auth.reducer';
-import {selectUser} from '../../../store/auth/auth.selectors';
-import {map, takeUntil} from 'rxjs/operators';
-import TokenService from '../../../services/token.service';
-import {AuthActionsTypes, SignInFailureAction, SignOutAction, TrySignInAction} from '../../../store/auth/auth.actions';
-import {Router} from '@angular/router';
-import {UIState} from '../../../store/ui/ui.reducer';
-import {ofType} from '@ngrx/effects';
-import {Observable, Subject} from 'rxjs';
-import {AccountState} from '../../../store/account/account.reducer';
-import {LoadCurrenciesAction, LoadUserAccountsAction} from '../../../store/account/account.actions';
-import {selectLoadingQueue} from '../../../store/ui/ui.selectors';
+import { Component, OnInit } from '@angular/core';
+import { ActionsSubject, select, Store } from '@ngrx/store';
+import { AuthState } from '../../../store/auth/auth.reducer';
+import { selectUser } from '../../../store/auth/auth.selectors';
+import { map, takeUntil } from 'rxjs/operators';
+import { AuthActionsTypes, SignInFailureAction, SignOutAction, TrySignInAction } from '../../../store/auth/auth.actions';
+import { Router } from '@angular/router';
+import { UIState } from '../../../store/ui/ui.reducer';
+import { ofType } from '@ngrx/effects';
+import { Observable, Subject } from 'rxjs';
+import { AccountState } from '../../../store/account/account.reducer';
+import { LoadCurrenciesAction, LoadUserAccountsAction } from '../../../store/account/account.actions';
+import { selectLoadingQueue } from '../../../store/ui/ui.selectors';
+import { CredentialsService } from '../../../../core/shared/domain/service/credentials.service';
 
 @Component({
   selector: 'app-in-app',
   templateUrl: './in-app.component.html',
-  styleUrls: ['./in-app.component.scss']
+  styleUrls: [ './in-app.component.scss' ]
 })
 export class InAppComponent implements OnInit {
   public destroy$ = new Subject<boolean>();
 
   public loadingType$: Observable<number> = this.uiStore$.pipe(select(selectLoadingQueue));
+
   public userFullName$ = this.storeAuth$.pipe(select(selectUser)).pipe(map(u => u?.getFullName()));
 
   constructor(
@@ -30,6 +31,7 @@ export class InAppComponent implements OnInit {
     private accountsStore$: Store<AccountState>,
     private router: Router,
     private actions$: ActionsSubject,
+    private authService: CredentialsService,
   ) {
   }
 
@@ -44,10 +46,10 @@ export class InAppComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(async () => await this.router.navigateByUrl('/sign-in'));
 
-    if (TokenService.hasToken()) {
+    if (this.authService.isAuthorized()) {
       try {
-        const credentials = TokenService.extractCredentialsFromToken(TokenService.getToken());
-        await this.storeAuth$.dispatch(new TrySignInAction({email: credentials.email, password: credentials.password}));
+        const credentials = this.authService.extractCredentials();
+        await this.storeAuth$.dispatch(new TrySignInAction({ email: credentials.email, password: credentials.password }));
         return;
       } catch (e) {
       }

@@ -24,8 +24,9 @@ import { CoreSharedModule } from '../shared/infrastructure/core-shared.module';
     {
       provide: UserModelManager,
       useClass: UserModelManagerImpl
-    }
+    },
   ],
 })
 export class CoreUserModule {
 }
+
