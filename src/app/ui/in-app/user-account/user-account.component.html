@@ -8,7 +8,7 @@
     <div>
       <button mat-menu-item *ngFor="let i of accounts$ | async" class="account-item" (click)="navigateToAccount(i.id)">
         <div style="line-height: 48px;">
-          <div mat-line class="account-name" style="float: left; padding: 0 23.5px 0 0; font-size: 25px">
+          <div mat-line class="account-name" style="float: left; padding: 0 20px 0 0; font-size: 25px">
             <span class="account-currency">{{getWalletCurrencySign(i.currencyId)}}</span>
           </div>
           <div style="float: left;">

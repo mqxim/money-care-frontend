@@ -18,7 +18,7 @@ body {
   padding: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 1% url("app/ui/assets/background-image.svg") repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 1% url("assets/background-image.svg") repeat;
 
   @media screen and (min-width: 1024px) {
     background-size: 20% auto;
