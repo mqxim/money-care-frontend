@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import AccountReport from '../../models/AccountReport';
+import { AccountReport } from '../model';
 
 export enum AccountReportActionsTypes {
   LOAD_ACCOUNT_REPORT = '[AccountReport] LOAD_ACCOUNT_REPORT',

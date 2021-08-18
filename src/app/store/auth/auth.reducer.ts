@@ -1,5 +1,5 @@
-import User from '../../models/User';
-import {AuthAction, AuthActionsTypes} from './auth.actions';
+import { User } from '../model';
+import { AuthAction, AuthActionsTypes } from './auth.actions';
 
 export const authNode = 'authNode';
 

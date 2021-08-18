@@ -1,6 +1,6 @@
-import Account from '../../models/Account';
-import {AccountActions, AccountActionsTypes} from './account.actions';
-import Currency from '../../models/Currency';
+import { Account } from '../model';
+import { Currency } from '../model';
+import { AccountActions, AccountActionsTypes } from './account.actions';
 
 export const accountNode = 'accountNode';
 
@@ -43,21 +43,21 @@ export function accountReducer(state = initialState, action: AccountActions): Ac
     case AccountActionsTypes.CREATE_ACCOUNT_SUCCEEDED: {
       return {
         ...state,
-        userAccounts: [...state.userAccounts, action.payload.account]
+        userAccounts: [ ...state.userAccounts, action.payload.account ]
       };
     }
     case AccountActionsTypes.DELETE_ACCOUNT_SUCCEEDED: {
       return {
         ...state,
-        userAccounts: [...state.userAccounts.filter((acc) => acc.id !== action.payload.deletedAccountId)]
+        userAccounts: [ ...state.userAccounts.filter((acc) => acc.id !== action.payload.deletedAccountId) ]
       };
     }
     case AccountActionsTypes.RENAME_ACCOUNT_SUCCEEDED: {
       return {
         ...state,
-        userAccounts: [...state.userAccounts.map((acc) => {
+        userAccounts: [ ...state.userAccounts.map((acc) => {
           return acc.id === action.payload.account.id ? action.payload.account : acc;
-        })]
+        }) ]
       };
     }
     default: {

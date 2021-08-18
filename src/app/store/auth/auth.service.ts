@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import User from '../../models/User';
+import { User } from '../model';
 import { CreateUserUseCase } from '../../../core/user/application/use-case/create-user.use-case';
 import { SignInUseCase } from '../../../core/user/application/use-case/sign-in.use-case';
 import { UpdateUserUseCase } from '../../../core/user/application/use-case/update-user.use-case';

@@ -1,10 +1,10 @@
-import AccountReport from '../../models/AccountReport';
-import {AccountReportActions, AccountReportActionsTypes} from './account-report.actions';
+import { AccountReport } from '../model';
+import { AccountReportActions, AccountReportActionsTypes } from './account-report.actions';
 
 export const accountReportNode = 'accountReportNode';
 
 export interface AccountReportState {
-  accountReport: AccountReport|null;
+  accountReport: AccountReport | null;
 }
 
 const initialState: AccountReportState = {

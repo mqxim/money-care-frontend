@@ -1,15 +1,15 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import Currency from '../../../models/Currency';
-import {select, Store} from '@ngrx/store';
-import {AccountState} from '../../../store/account/account.reducer';
-import {selectCurrencies} from '../../../store/account/account.selectors';
-import {CreateAccountAction} from '../../../store/account/account.actions';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Currency } from '../../../store/model';
+import { select, Store } from '@ngrx/store';
+import { AccountState } from '../../../store/account/account.reducer';
+import { selectCurrencies } from '../../../store/account/account.selectors';
+import { CreateAccountAction } from '../../../store/account/account.actions';
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
-  styleUrls: ['./create-account.component.scss']
+  styleUrls: [ './create-account.component.scss' ]
 })
 export class CreateAccountComponent implements OnInit {
   @Output() whenClose = new EventEmitter();
@@ -23,8 +23,8 @@ export class CreateAccountComponent implements OnInit {
   ) {
     this.form = new FormGroup(
       {
-        name: new FormControl(null, [Validators.required]),
-        currency: new FormControl(null, [Validators.required]),
+        name: new FormControl(null, [ Validators.required ]),
+        currency: new FormControl(null, [ Validators.required ]),
       }
     );
 

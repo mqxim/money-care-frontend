@@ -1,8 +1,5 @@
-import Transaction from '../../models/Transaction';
-import AccountReport from '../../models/AccountReport';
 import { Injectable } from '@angular/core';
-import Account from '../../models/Account';
-import Currency from '../../models/Currency';
+import { Currency, Account, AccountReport, Transaction } from '../model';
 import { CreateTransactionUseCase } from '../../../core/account/application/use-case/create-transaction.use-case';
 import { DeleteTransactionUseCase } from '../../../core/account/application/use-case/delete-transaction.use-case';
 import { GenerateAccountReportUseCase } from '../../../core/account/application/use-case/generate-account-report.use-case';

@@ -1,5 +1,4 @@
-import Account from '../../models/Account';
-import Currency from '../../models/Currency';
+import { Currency, Account } from '../model';
 import { FindCurrenciesUseCase } from '../../../core/account/application/use-case/find-currencies.use-case';
 import { FindAccountsUseCase } from '../../../core/account/application/use-case/find-accounts.use-case';
 import { CredentialsService } from '../../../core/shared/domain/service/credentials.service';

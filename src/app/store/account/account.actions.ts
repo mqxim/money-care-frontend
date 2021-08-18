@@ -1,6 +1,5 @@
-import {Action} from '@ngrx/store';
-import Account from '../../models/Account';
-import Currency from '../../models/Currency';
+import { Action } from '@ngrx/store';
+import { Account, Currency } from '../model';
 
 export enum AccountActionsTypes {
   LOAD_USER_ACCOUNTS = '[Account] LOAD_USER_ACCOUNT',

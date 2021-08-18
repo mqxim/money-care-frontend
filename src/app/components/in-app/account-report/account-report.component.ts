@@ -1,21 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {AccountReportState} from '../../../store/account-report/account-report.reducer';
-import {ActionsSubject, select, Store} from '@ngrx/store';
-import {ofType} from '@ngrx/effects';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { AccountReportState } from '../../../store/account-report/account-report.reducer';
+import { ActionsSubject, select, Store } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import {
   AccountReportActionsTypes,
   AccountReportLoaded, DeleteAccountTransactionAction, DeleteTransactionLoadedAction, FailedLoadAccountReport,
   LoadAccountReportAction, SortAccountTransactionsByRecentAction, SortAccountTransactionsBySignificantAction
 } from '../../../store/account-report/account-report.actions';
-import {UIState} from '../../../store/ui/ui.reducer';
-import {UIBeginLoadingAction, UIEndLoadingAction} from '../../../store/ui/ui.actions';
-import {selectAccountReport} from '../../../store/account-report/account-report.selectors';
-import AccountReport from '../../../models/AccountReport';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { UIState } from '../../../store/ui/ui.reducer';
+import { UIBeginLoadingAction, UIEndLoadingAction } from '../../../store/ui/ui.actions';
+import { selectAccountReport } from '../../../store/account-report/account-report.selectors';
+import { AccountReport } from '../../../store/model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Category from '../../../models/Category';
 
 export interface CardSettings {
@@ -29,7 +29,7 @@ export interface CardSettings {
 @Component({
   selector: 'app-account-report',
   templateUrl: './account-report.component.html',
-  styleUrls: ['./account-report.component.scss']
+  styleUrls: [ './account-report.component.scss' ]
 })
 export class AccountReportComponent implements OnInit {
   destroy$ = new Subject<boolean>();
@@ -46,11 +46,11 @@ export class AccountReportComponent implements OnInit {
     startDate: new FormControl((() => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), 1);
-    })(), [Validators.required]),
+    })(), [ Validators.required ]),
     endDate: new FormControl((() => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-    })(), [Validators.required])
+    })(), [ Validators.required ])
   });
 
   accountReport: AccountReport | null;
@@ -197,7 +197,8 @@ export class AccountReportComponent implements OnInit {
   selector: 'app-create-transaction-dialog',
   template: `
     <div>
-      <app-create-transaction-form (whenClose)="dialogRef.close({submit: false})" (whenSubmit)="dialogRef.close({submit: true})"></app-create-transaction-form>
+      <app-create-transaction-form (whenClose)="dialogRef.close({submit: false})"
+                                   (whenSubmit)="dialogRef.close({submit: true})"></app-create-transaction-form>
     </div>`
 })
 export class CreateTransactionDialogComponent implements OnInit {
@@ -229,6 +230,6 @@ export class DeleteTransactionDialogComponent implements OnInit {
   }
 
   onSubmitDelete(): void {
-    this.dialogRef.close({submit: true});
+    this.dialogRef.close({ submit: true });
   }
 }

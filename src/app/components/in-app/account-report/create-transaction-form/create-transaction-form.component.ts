@@ -1,30 +1,31 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {AccountReportState} from '../../../../store/account-report/account-report.reducer';
-import {selectAccountReport} from '../../../../store/account-report/account-report.selectors';
-import {AccountState} from '../../../../store/account/account.reducer';
-import {selectCurrencies} from '../../../../store/account/account.selectors';
-import Currency from '../../../../models/Currency';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { AccountReportState } from '../../../../store/account-report/account-report.reducer';
+import { selectAccountReport } from '../../../../store/account-report/account-report.selectors';
+import { AccountState } from '../../../../store/account/account.reducer';
+import { selectCurrencies } from '../../../../store/account/account.selectors';
 import Category from '../../../../models/Category';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {CreateAccountTransactionAction} from '../../../../store/account-report/account-report.actions';
-import Account from '../../../../models/Account';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { CreateAccountTransactionAction } from '../../../../store/account-report/account-report.actions';
+
+import { Account, Currency } from '../../../../store/model';
 
 @Component({
   selector: 'app-create-transaction-form',
   templateUrl: './create-transaction-form.component.html',
-  styleUrls: ['./create-transaction-form.component.scss']
+  styleUrls: [ './create-transaction-form.component.scss' ]
 })
 export class CreateTransactionFormComponent implements OnInit {
   @Output() whenClose = new EventEmitter();
+
   @Output() whenSubmit = new EventEmitter();
 
   form = new FormGroup({
     category: new FormControl(null, []),
-    cost: new FormControl(null, [Validators.required, Validators.min(0)]),
+    cost: new FormControl(null, [ Validators.required, Validators.min(0) ]),
     comment: new FormControl(null, []),
     isExpense: new FormControl(true),
   });
@@ -36,7 +37,7 @@ export class CreateTransactionFormComponent implements OnInit {
   categories: Category[];
 
   selectable = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ ENTER, COMMA ];
   selectedCategories: string[] = [];
 
   @ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;

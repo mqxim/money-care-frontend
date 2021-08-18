@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {selectUser} from '../../../store/auth/auth.selectors';
-import {map} from 'rxjs/operators';
-import {AuthState} from '../../../store/auth/auth.reducer';
-import {SignOutAction} from '../../../store/auth/auth.actions';
-import {Router} from '@angular/router';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {selectCurrencies, selectUserAccounts} from '../../../store/account/account.selectors';
-import {AccountState} from '../../../store/account/account.reducer';
-import Currency from '../../../models/Currency';
+import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { selectUser } from '../../../store/auth/auth.selectors';
+import { map } from 'rxjs/operators';
+import { AuthState } from '../../../store/auth/auth.reducer';
+import { SignOutAction } from '../../../store/auth/auth.actions';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { selectCurrencies, selectUserAccounts } from '../../../store/account/account.selectors';
+import { AccountState } from '../../../store/account/account.reducer';
+import { Currency } from '../../../store/model';
 
 @Component({
   selector: 'app-user-account',
   templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss']
+  styleUrls: [ './user-account.component.scss' ]
 })
 export class UserAccountComponent implements OnInit {
 
