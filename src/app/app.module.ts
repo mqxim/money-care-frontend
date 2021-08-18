@@ -11,15 +11,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { InAppModule } from './components/in-app/in-app/in-app.module';
+import { InAppModule } from './ui/in-app/in-app/in-app.module';
 
 import { CoreUserModule } from '../core/user/core-user.module';
 import { CoreSharedModule } from '../core/shared/infrastructure/core-shared.module';
 import { CoreAccountModule } from '../core/account/infrastructure/core-account.module';
-import { SignInComponent } from './components/auth/sign-in.component';
+import { SignInComponent } from './ui/auth/sign-in.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SignUpComponent } from './components/auth/sign-up.component';
+import { SignUpComponent } from './ui/auth/sign-up.component';
 
 import { accountReportNode, accountReportReduces } from './store/account-report/account-report.reducer';
 import { accountNode, accountReducer } from './store/account/account.reducer';
