@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AuthState} from './store/auth/auth.reducer';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AuthState } from './store/auth/auth.reducer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
       <router-outlet></router-outlet>
     </div>
   `,
-  styleUrls: ['./app.component.scss']
+  styleUrls: []
 })
 export class AppComponent implements OnInit {
   title = 'Money Care';
