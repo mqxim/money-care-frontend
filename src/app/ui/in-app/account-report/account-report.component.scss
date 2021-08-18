@@ -22,14 +22,23 @@
       color: #fff;
       font-size: 20px;
 
+      padding-left: 5px;
+      padding-right: 5px;
+
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
     }
 
     &-counter {
+      padding-left: 5px;
+      padding-right: 5px;
       padding-top: 10px;
       font-size: 25px;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
 
       &-positive {
         color: rgb(179, 234, 112);;
@@ -120,6 +129,7 @@
       margin-top: -20px;
 
       h1 {
+        text-align: right;
         margin: 0;
       }
     }

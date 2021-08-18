@@ -136,8 +136,9 @@ export class AccountReportComponent implements OnInit {
     }, 1000);
   }
 
-  getAbsolute(x: number): number {
-    return Math.round(Math.abs(x) * 100) / 100;
+  getAbsolute(x: number): string {
+    const num = (Math.round(Math.abs(x) * 100) / 100).toString();
+    return num.length > 12 ? num.substr(0, 12) + '...' : num;
   }
 
   onSignificantSort(): void {
