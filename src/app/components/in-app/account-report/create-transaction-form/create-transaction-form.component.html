@@ -30,7 +30,7 @@
           <span *ngIf="form.controls.isExpense.value === true">💸 Expense</span>
         </mat-slide-toggle>
       </span>
-      <mat-error *ngIf="form.controls.cost.invalid">Cost is required</mat-error>
+      <mat-error *ngIf="form.controls.cost.invalid">Cost is required and must consist of digits</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-input">
       <mat-label>Comment</mat-label>
