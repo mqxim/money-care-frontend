@@ -33,8 +33,14 @@ class AuthServices {
     return new User(response.id, response.firstName, response.lastName);
   }
 
-  public async changePassword({ password }): Promise<User> {
+  public async changePassword({ oldPassword, password }): Promise<User> {
     const user = this.authService.extractCredentials();
+
+    if (user.password !== oldPassword) {
+      throw new Error();
+    }
+
+    this.authService.authorize({ ...user, password });
 
     const response = await this.updateUserUseCase.exec2({
       emailOfUserToUpdate: user.email,

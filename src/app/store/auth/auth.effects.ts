@@ -85,6 +85,7 @@ export class AuthEffects {
             }
 
             await this.authService.changePassword({
+              oldPassword: action.payload.oldPassword,
               password: action.payload.newPassword,
             });
 
