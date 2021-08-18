@@ -4,7 +4,8 @@ import {
   AuthActionsTypes,
   ChangePasswordAction,
   ChangePasswordFailureAction,
-  ChangePasswordSuccessAction, ChangeUserinfoAction,
+  ChangePasswordSuccessAction,
+  ChangeUserinfoAction,
   ChangeUserinfoFailureAction,
   ChangeUserinfoSuccessAction,
   SignInFailureAction,
@@ -119,8 +120,6 @@ export class AuthEffects {
 
   @Effect()
   logout(): Observable<any> {
-    console.log('logout');
-
     return this.actions$.pipe(
       ofType<SignOutAction>(AuthActionsTypes.SIGN_OUT),
       exhaustMap(() => {

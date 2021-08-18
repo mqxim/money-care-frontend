@@ -79,10 +79,6 @@ export const connect = async (): Promise<IDBDatabase> => {
       } catch (e) {
       }
 
-      const categories = openDBRequest.result.transaction(STORES.CATEGORY).objectStore(STORES.CATEGORY);
-      const r = categories.getAll();
-      r.addEventListener('success', () => console.log(r.result));
-
       resolve(openDBRequest.result);
     }, { once: true });
   });
