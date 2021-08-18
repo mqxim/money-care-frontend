@@ -30,6 +30,7 @@ const createDefaultValues = (db: IDBDatabase) => {
   categories.add(new Category(random.makeId(), 'Phones & Gadgets', random.makeColor()));
   categories.add(new Category(random.makeId(), 'Rash spending', random.makeColor()));
   categories.add(new Category(random.makeId(), 'Force Majeure', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Salary & Other Incomes', random.makeColor()));
 };
 
 const makeStore = (db: IDBDatabase) => {
