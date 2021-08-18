@@ -1,5 +1,5 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {accountNode, AccountState} from './account.reducer';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { accountNode, AccountState } from './account.reducer';
 
 const accountFeatureSelector = createFeatureSelector<AccountState>(accountNode);
 
@@ -13,7 +13,13 @@ const selectCurrencies = createSelector(
   (state) => state.currencies
 );
 
+const selectCategories = createSelector(
+  accountFeatureSelector,
+  (state) => state.categories
+);
+
 export {
   selectUserAccounts,
   selectCurrencies,
+  selectCategories
 };

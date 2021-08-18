@@ -8,6 +8,15 @@ export class Account {
   }
 }
 
+export class Category {
+  constructor(
+    public readonly id: string,
+    public readonly name: string,
+    public readonly color: string,
+  ) {
+  }
+}
+
 export class AccountReport {
   constructor(
     public readonly startDate: Date,
@@ -57,5 +66,3 @@ export class User {
     return this.firstName + ' ' + this.lastName;
   }
 }
-
-

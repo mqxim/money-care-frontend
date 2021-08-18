@@ -22,6 +22,7 @@ import { CategoryModelManager } from '../domain/model-manager/category.model-man
 import { CategoryModelManagerImpl } from './persistence/indexedDB/model-manager/category.model-manager';
 import { CategoryRepository } from '../domain/repository/category.repository';
 import { CategoryRepositoryImpl } from './persistence/indexedDB/repository/category.repository';
+import { FindCategoriesUseCase } from '../application/use-case/find-categories.use-case';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { CategoryRepositoryImpl } from './persistence/indexedDB/repository/categ
     CreateTransactionUseCase,
     DeleteTransactionUseCase,
     GenerateAccountReportUseCase,
+    FindCategoriesUseCase,
     {
       provide: CurrencyRepository,
       useClass: CurrencyRepositoryImpl,

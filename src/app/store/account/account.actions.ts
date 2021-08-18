@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Account, Currency } from '../model';
+import { Account, Category, Currency } from '../model';
 
 export enum AccountActionsTypes {
   LOAD_USER_ACCOUNTS = '[Account] LOAD_USER_ACCOUNT',
@@ -17,6 +17,9 @@ export enum AccountActionsTypes {
   RENAME_ACCOUNT_ACTION = '[Account] RENAME_ACCOUNT_ACTION',
   RENAME_ACCOUNT_SUCCEEDED = '[Account] RENAME_ACCOUNT_SUCCEEDED',
   FAILED_TO_RENAME_ACCOUNT = '[Account] FAILED_TO_RENAME_ACCOUNT',
+  LOAD_CATEGORIES_ACTION = '[Account] LOAD_CATEGORIES_ACTION',
+  CATEGORIES_LOADED = '[Account] CATEGORIES_LOADED',
+  FAILED_TO_LOAD_CATEGORIES = '[Account] FAILED_TO_LOAD_CATEGORIES',
 }
 
 export class LoadCurrenciesAction implements Action {
@@ -119,6 +122,27 @@ export class FailedToRenameAccountAction implements Action {
   readonly type = AccountActionsTypes.FAILED_TO_RENAME_ACCOUNT;
 }
 
+export class LoadCategoriesAction implements Action {
+  readonly type = AccountActionsTypes.LOAD_CATEGORIES_ACTION;
+}
+
+export class CategoriesLoadedAction implements Action {
+  readonly type = AccountActionsTypes.CATEGORIES_LOADED;
+
+  constructor(public payload: {
+    categories: Category[],
+  }) {
+  }
+}
+
+export class FailedToLoadCategories implements Action {
+  readonly type = AccountActionsTypes.FAILED_TO_LOAD_CATEGORIES;
+}
+
+export class FailedToLoadCategoriesAction implements Action {
+  readonly type = AccountActionsTypes.FAILED_TO_LOAD_CATEGORIES;
+}
+
 type AccountActions = UserAccountsLoadedAction
   | LoadUserAccountsAction
   | FailedToLoadUserAccountsAction
@@ -134,6 +158,9 @@ type AccountActions = UserAccountsLoadedAction
   | RenameAccountAction
   | RenameAccountSucceededAction
   | FailedToRenameAccountAction
+  | LoadCategoriesAction
+  | CategoriesLoadedAction
+  | FailedToLoadCategoriesAction
   ;
 
 export {

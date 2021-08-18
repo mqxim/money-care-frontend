@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
-  AccountActionsTypes,
+  AccountActionsTypes, CategoriesLoadedAction,
   CreateAccountAction,
   CreateAccountSucceededAction,
   CurrenciesLoadedAction,
@@ -9,9 +9,11 @@ import {
   DeleteAccountSucceededAction,
   FailedToCreateAccountAction,
   FailedToDeleteAccountAction,
+  FailedToLoadCategories,
   FailedToLoadCurrenciesAction,
   FailedToLoadUserAccountsAction,
   FailedToRenameAccountAction,
+  LoadCategoriesAction,
   LoadUserAccountsAction,
   RenameAccountAction,
   RenameAccountSucceededAction,
@@ -99,6 +101,21 @@ export class AccountEffects {
           this.accountService.renameAccount(action.payload.accountId, action.payload.newName)
             .then((response) => resolve(new RenameAccountSucceededAction({ account: response })))
             .catch(() => new FailedToRenameAccountAction())
+          ;
+        }));
+      })
+    );
+  }
+
+  @Effect()
+  fetchCategories(): Observable<any> {
+    return this.actions$.pipe(
+      ofType<LoadCategoriesAction>(AccountActionsTypes.LOAD_CATEGORIES_ACTION),
+      exhaustMap(() => {
+        return fromPromise(new Promise(async (resolve) => {
+          this.accountService.getUserCategories()
+            .then((response) => resolve(new CategoriesLoadedAction({ categories: response })))
+            .catch(() => new FailedToLoadCategories())
           ;
         }));
       })

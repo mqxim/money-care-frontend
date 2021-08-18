@@ -1,5 +1,4 @@
-import { Account } from '../model';
-import { Currency } from '../model';
+import { Account, Category, Currency } from '../model';
 import { AccountActions, AccountActionsTypes } from './account.actions';
 
 export const accountNode = 'accountNode';
@@ -7,11 +6,13 @@ export const accountNode = 'accountNode';
 export interface AccountState {
   userAccounts: Account[];
   currencies: Currency[];
+  categories: Category[];
 }
 
 const initialState: AccountState = {
   userAccounts: [],
   currencies: [],
+  categories: [],
 };
 
 export function accountReducer(state = initialState, action: AccountActions): AccountState {
@@ -58,6 +59,12 @@ export function accountReducer(state = initialState, action: AccountActions): Ac
         userAccounts: [ ...state.userAccounts.map((acc) => {
           return acc.id === action.payload.account.id ? action.payload.account : acc;
         }) ]
+      };
+    }
+    case AccountActionsTypes.CATEGORIES_LOADED: {
+      return {
+        ...state,
+        categories: action.payload.categories,
       };
     }
     default: {

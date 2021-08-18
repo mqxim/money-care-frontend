@@ -1,4 +1,4 @@
-import { Currency, Account } from '../model';
+import { Currency, Account, Category } from '../model';
 import { FindCurrenciesUseCase } from '../../../core/account/application/use-case/find-currencies.use-case';
 import { FindAccountsUseCase } from '../../../core/account/application/use-case/find-accounts.use-case';
 import { CredentialsService } from '../../../core/shared/domain/service/credentials.service';
@@ -6,6 +6,7 @@ import { CreateAccountUseCase } from '../../../core/account/application/use-case
 import { UpdateAccountsUseCase } from '../../../core/account/application/use-case/update-account.use-case';
 import { DeleteAccountUseCase } from '../../../core/account/application/use-case/delete-account.use-case';
 import { Injectable } from '@angular/core';
+import { FindCategoriesUseCase } from '../../../core/account/application/use-case/find-categories.use-case';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AccountService {
     private createAccountUseCase: CreateAccountUseCase,
     private updateAccountUseCase: UpdateAccountsUseCase,
     private deleteAccountUseCase: DeleteAccountUseCase,
+    private findCategoryUseCase: FindCategoriesUseCase,
   ) {
   }
 
@@ -69,5 +71,15 @@ export class AccountService {
       response.account.currencyId,
       response.account.createDate,
     ));
+  }
+
+  public getUserCategories(): Promise<Category[]> {
+    return this.findCategoryUseCase.exec()
+      .then((r) => r.categories.map((c) => new Category(
+          c.id,
+          c.name,
+          c.color
+        ))
+      );
   }
 }

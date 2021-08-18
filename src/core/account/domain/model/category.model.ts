@@ -22,6 +22,10 @@ export class Category extends DefaultModel {
     return this;
   }
 
+  public getColor(): string {
+    return this.color;
+  }
+
   public changeColor(color: string): Category {
     this.color = color;
     return this;
