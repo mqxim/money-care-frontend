@@ -52,14 +52,11 @@ const effects = [
     StoreModule.forFeature(UINode, UIReducer),
     StoreModule.forFeature(accountNode, accountReducer),
     StoreModule.forFeature(accountReportNode, accountReportReduces),
-
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot(),
     RouterModule.forRoot([]),
-
     InAppModule,
-
     CoreUserModule,
     CoreSharedModule,
     CoreAccountModule,
