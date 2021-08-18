@@ -18,6 +18,10 @@ import { TransactionModelManager } from '../domain/model-manager/transaction.mod
 import { CreateTransactionUseCase } from '../application/use-case/create-transaction.use-case';
 import { DeleteTransactionUseCase } from '../application/use-case/delete-transaction.use-case';
 import { GenerateAccountReportUseCase } from '../application/use-case/generate-account-report.use-case';
+import { CategoryModelManager } from '../domain/model-manager/category.model-manager';
+import { CategoryModelManagerImpl } from './persistence/indexedDB/model-manager/category.model-manager';
+import { CategoryRepository } from '../domain/repository/category.repository';
+import { CategoryRepositoryImpl } from './persistence/indexedDB/repository/category.repository';
 
 @NgModule({
   imports: [
@@ -52,6 +56,14 @@ import { GenerateAccountReportUseCase } from '../application/use-case/generate-a
     {
       provide: TransactionModelManager,
       useClass: TransactionModelManagerImpl,
+    },
+    {
+      provide: CategoryModelManager,
+      useClass: CategoryModelManagerImpl,
+    },
+    {
+      provide: CategoryRepository,
+      useClass: CategoryRepositoryImpl,
     },
   ],
 })
