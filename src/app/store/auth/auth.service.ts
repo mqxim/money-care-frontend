@@ -55,6 +55,10 @@ class AuthServices {
 
     return new User(response.id, response.firstName, response.lastName);
   }
+
+  public logout(): void {
+    this.authService.logout();
+  }
 }
 
 export {

@@ -9,6 +9,7 @@ import {
   ChangeUserinfoSuccessAction,
   SignInFailureAction,
   SignInSuccessAction,
+  SignOutAction,
   SignUpFailureAction,
   SignUpSuccessAction,
   TrySignInAction,
@@ -111,6 +112,20 @@ export class AuthEffects {
           } catch (e) {
             resolve(new ChangeUserinfoFailureAction({}));
           }
+        }));
+      })
+    );
+  }
+
+  @Effect()
+  logout(): Observable<any> {
+    console.log('logout');
+
+    return this.actions$.pipe(
+      ofType<SignOutAction>(AuthActionsTypes.SIGN_OUT),
+      exhaustMap(() => {
+        return fromPromise(new Promise(() => {
+          this.authService.logout();
         }));
       })
     );

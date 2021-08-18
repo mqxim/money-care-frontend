@@ -19,6 +19,10 @@ export class CredentialsService {
     localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(user));
   }
 
+  public logout(): void {
+    return localStorage.removeItem(this.LOCAL_STORAGE_KEY);
+  }
+
   public isAuthorized(): boolean {
     return !!localStorage.getItem(this.LOCAL_STORAGE_KEY);
   }
