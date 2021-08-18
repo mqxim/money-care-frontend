@@ -1,14 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {UIState} from '../../../store/ui/ui.reducer';
-import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {selectLoadingQueue} from '../../../store/ui/ui.selectors';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { UIState } from '../../../store/ui/ui.reducer';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectLoadingQueue } from '../../../store/ui/ui.selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: [ './menu.component.scss' ]
 })
 export class MenuComponent implements OnInit, OnChanges {
   @Input() name: string;

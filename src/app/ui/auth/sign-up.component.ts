@@ -1,16 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subject} from 'rxjs';
-import {ActionsSubject, Store} from '@ngrx/store';
-import {AuthState} from '../../store/auth/auth.reducer';
-import {ofType} from '@ngrx/effects';
-import {
-  AuthActionsTypes, SignOutAction,
-  SignUpFailureAction,
-  SignUpSuccessAction, TrySignUpAction,
-} from '../../store/auth/auth.actions';
-import {takeUntil} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { AuthState } from '../../store/auth/auth.reducer';
+import { ofType } from '@ngrx/effects';
+import { AuthActionsTypes, SignOutAction, SignUpFailureAction, SignUpSuccessAction, TrySignUpAction, } from '../../store/auth/auth.actions';
+import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',

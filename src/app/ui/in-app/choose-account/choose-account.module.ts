@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ChooseAccountComponent } from './choose-account.component';
 
 
-
 @NgModule({
   declarations: [ChooseAccountComponent],
   imports: [

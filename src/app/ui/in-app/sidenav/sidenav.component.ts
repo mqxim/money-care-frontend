@@ -1,16 +1,16 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {AccountState} from '../../../store/account/account.reducer';
-import {selectCurrencies, selectUserAccounts} from '../../../store/account/account.selectors';
+import { Component, Inject, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { AccountState } from '../../../store/account/account.reducer';
+import { selectCurrencies, selectUserAccounts } from '../../../store/account/account.selectors';
 import { Currency } from '../../../store/model';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DeleteAccountAction, RenameAccountAction} from '../../../store/account/account.actions';
-import {Router} from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeleteAccountAction, RenameAccountAction } from '../../../store/account/account.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  styleUrls: [ './sidenav.component.scss' ]
 })
 export class SidenavComponent implements OnInit {
   public isEditAccountsMode = false;

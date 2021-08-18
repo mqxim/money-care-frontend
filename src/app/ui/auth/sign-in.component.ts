@@ -1,18 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthState } from '../../store/auth/auth.reducer';
 import { ActionsSubject, Store } from '@ngrx/store';
-import {
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-import {
-  AuthActionsTypes,
-  SignInFailureAction,
-  SignInSuccessAction,
-  SignOutAction,
-  TrySignInAction
-} from '../../store/auth/auth.actions';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthActionsTypes, SignInFailureAction, SignInSuccessAction, SignOutAction, TrySignInAction } from '../../store/auth/auth.actions';
 import { ofType } from '@ngrx/effects';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

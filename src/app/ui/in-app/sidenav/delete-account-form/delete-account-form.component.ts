@@ -1,24 +1,21 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-delete-transaction-form',
+  selector: 'app-delete-account-form',
   template: `
     <div>
-      <h1>🗑️ Are you sure to delete transaction?</h1>
+      <h1>🗑️ Are you sure to delete the account?</h1>
+      <span>All account data will be deleted without possibility to restore.</span>
       <div class="form-controls">
         <button mat-raised-button (click)="onClose()">Cancel</button>
         <button mat-raised-button color="warn" (click)="onSubmit()">Delete</button>
       </div>
-    </div>
-  `,
-  styleUrls: ['./delete-transaction-form.component.scss']
+    </div>`,
+  styleUrls: ['./delete-account-form.component.scss']
 })
-export class DeleteTransactionFormComponent implements OnInit {
-  form: FormGroup;
-
-  @Output() whenSubmit = new EventEmitter();
+export class DeleteAccountFormComponent implements OnInit {
   @Output() whenClose = new EventEmitter();
+  @Output() whenSubmit = new EventEmitter();
 
   constructor() {
   }

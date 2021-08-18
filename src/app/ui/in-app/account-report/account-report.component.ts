@@ -8,15 +8,19 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {
   AccountReportActionsTypes,
-  AccountReportLoaded, DeleteAccountTransactionAction, DeleteTransactionLoadedAction, FailedLoadAccountReport,
-  LoadAccountReportAction, SortAccountTransactionsByRecentAction, SortAccountTransactionsBySignificantAction
+  AccountReportLoaded,
+  DeleteAccountTransactionAction,
+  DeleteTransactionLoadedAction,
+  FailedLoadAccountReport,
+  LoadAccountReportAction,
+  SortAccountTransactionsByRecentAction,
+  SortAccountTransactionsBySignificantAction
 } from '../../../store/account-report/account-report.actions';
 import { UIState } from '../../../store/ui/ui.reducer';
 import { UIBeginLoadingAction, UIEndLoadingAction } from '../../../store/ui/ui.actions';
 import { selectAccountReport } from '../../../store/account-report/account-report.selectors';
-import { AccountReport } from '../../../store/model';
+import { AccountReport, Category } from '../../../store/model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Category from '../../../models/Category';
 import { AccountState } from '../../../store/account/account.reducer';
 import { selectCategories } from '../../../store/account/account.selectors';
 
@@ -190,10 +194,6 @@ export class AccountReportComponent implements OnInit {
       }));
       this.uiStore$.dispatch(new UIEndLoadingAction());
     }, 1000);
-  }
-
-  getCategoryColor(name: string): string {
-    return Category.getColorForCategory(name);
   }
 
   ngOnInit(): void {

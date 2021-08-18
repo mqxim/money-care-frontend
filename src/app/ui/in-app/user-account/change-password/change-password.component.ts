@@ -1,16 +1,17 @@
-import {Component, EventEmitter, OnInit, OnDestroy, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthState} from '../../../../store/auth/auth.reducer';
-import {ActionsSubject, Store} from '@ngrx/store';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthState } from '../../../../store/auth/auth.reducer';
+import { ActionsSubject, Store } from '@ngrx/store';
 import {
   AuthActionsTypes,
-  ChangePasswordAction, ChangePasswordFailureAction,
+  ChangePasswordAction,
+  ChangePasswordFailureAction,
   ChangePasswordSuccessAction,
 } from '../../../../store/auth/auth.actions';
-import {Subject} from 'rxjs';
-import {ofType} from '@ngrx/effects';
-import {takeUntil} from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+import { ofType } from '@ngrx/effects';
+import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   template: `
