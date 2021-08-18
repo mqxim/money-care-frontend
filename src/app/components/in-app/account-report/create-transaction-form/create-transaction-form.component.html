@@ -33,8 +33,12 @@
       <mat-error *ngIf="form.controls.cost.invalid">Cost is required and must consist of digits</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-input">
-      <mat-label>Comment</mat-label>
-      <textarea matInput formControlName="comment" class="comment"></textarea>
+      <mat-label>💬 Comment</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        formControlName="comment"
+        class="comment"></textarea>
     </mat-form-field>
     <div class="form-controls">
       <button mat-raised-button (click)="onClose()">Cancel</button>
