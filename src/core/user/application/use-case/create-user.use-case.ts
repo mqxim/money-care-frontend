@@ -1,9 +1,9 @@
 import { UserRepository } from '../../domain/repository/user.repository';
 import { UserModelManager } from '../../domain/model-manager/user.model-manager';
 import { User } from '../../domain/model/user.model';
-import { generateId } from '../../../shared/domain/utils/random';
 import { Injectable } from '@angular/core';
 import { CredentialsService } from '../../../shared/domain/service/credentials.service';
+import { RandomService } from '../../../shared/domain/service/random.service';
 
 class UserWithSameEmailAlreadyExistsException extends Error {
   constructor(email: string) {
@@ -31,6 +31,7 @@ export class CreateUserUseCase {
     private userRepository: UserRepository,
     private userModelManager: UserModelManager,
     private authService: CredentialsService,
+    private random: RandomService,
   ) {
   }
 
@@ -42,7 +43,7 @@ export class CreateUserUseCase {
     }
 
     const user = await this.userModelManager.save(new User(
-      generateId(),
+      this.random.makeId(),
       request.email,
       request.firstName,
       request.lastName,

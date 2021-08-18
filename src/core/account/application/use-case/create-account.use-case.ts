@@ -2,8 +2,8 @@ import { AccountDto } from '../dto/account.dto';
 import { AccountModelManager } from '../../domain/model-manager/account.model-manager';
 import { CredentialsService } from '../../../shared/domain/service/credentials.service';
 import { Account } from '../../domain/model/account.model';
-import { generateId } from '../../../shared/domain/utils/random';
 import { Injectable } from '@angular/core';
+import { RandomService } from '../../../shared/domain/service/random.service';
 
 class CreateAccountException extends Error {
   constructor() {
@@ -25,6 +25,7 @@ export class CreateAccountUseCase {
   constructor(
     private authService: CredentialsService,
     private modelManager: AccountModelManager,
+    private random: RandomService,
   ) {
   }
 
@@ -36,7 +37,7 @@ export class CreateAccountUseCase {
     }
 
     const account = new Account(
-      generateId(),
+      this.random.makeId(),
       user.id,
       request.name,
       request.currencyId,

@@ -1,12 +1,15 @@
-export default class Base64 {
-  public static encode(str: string): string {
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class Base64Service {
+  public encode(str: string): string {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
       function toSolidBytes(match, p1): string {
         return String.fromCharCode(Number('0x' + p1));
       }));
   }
 
-  public static decode(str: string): string {
+  public decode(str: string): string {
     return decodeURIComponent(
       atob(str)
         .split('')

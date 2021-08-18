@@ -1,6 +1,5 @@
-import randomColor from 'randomcolor';
-
 import { Category } from '../../../domain/model/category.model';
+import { RandomServiceImpl } from '../../../../shared/infrastructure/service/random.service';
 
 let connectionDB: IDBDatabase = null;
 
@@ -17,18 +16,20 @@ export const STORES = {
 };
 
 const createDefaultValues = (db: IDBDatabase) => {
+  const random = new RandomServiceImpl();
+
   const categories = db.transaction(STORES.CATEGORY, 'readwrite').objectStore(STORES.CATEGORY);
-  categories.add(new Category('1', 'Food', randomColor()));
-  categories.add(new Category('2', 'Auto & Transport', randomColor()));
-  categories.add(new Category('3', 'Clothes & Shoes', randomColor()));
-  categories.add(new Category('4', 'Apartments', randomColor()));
-  categories.add(new Category('5', 'Cafes & Restaurants', randomColor()));
-  categories.add(new Category('6', 'Entertainment & Fun', randomColor()));
-  categories.add(new Category('7', 'Trips & Travels', randomColor()));
-  categories.add(new Category('8', 'Health', randomColor()));
-  categories.add(new Category('9', 'Phones & Gadgets', randomColor()));
-  categories.add(new Category('10', 'Rash spending', randomColor()));
-  categories.add(new Category('11', 'Force Majeure', randomColor()));
+  categories.add(new Category(random.makeId(), 'Food', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Auto & Transport', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Clothes & Shoes', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Apartments', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Cafes & Restaurants', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Entertainment & Fun', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Trips & Travels', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Health', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Phones & Gadgets', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Rash spending', random.makeColor()));
+  categories.add(new Category(random.makeId(), 'Force Majeure', random.makeColor()));
 };
 
 const makeStore = (db: IDBDatabase) => {

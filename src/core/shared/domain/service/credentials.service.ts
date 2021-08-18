@@ -1,5 +1,5 @@
-import Base64 from '../utils/Base64';
 import { Injectable } from '@angular/core';
+import { Base64Service } from './base64.service';
 
 export interface Credentials {
   id: string;
@@ -10,6 +10,11 @@ export interface Credentials {
 @Injectable()
 export class CredentialsService {
   private readonly LOCAL_STORAGE_KEY = 'USER';
+
+  constructor(
+    private base64: Base64Service
+  ) {
+  }
 
   public authorize(user: {
     id: string,
@@ -39,7 +44,7 @@ export class CredentialsService {
 
   public makeBasicToken(): string {
     const credentials = this.extractCredentials();
-    return Base64.encode(`${credentials.email}:${credentials.password}`);
+    return this.base64.encode(`${credentials.email}:${credentials.password}`);
   }
 }
 
