@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountReportState } from '../../../store/account-report/account-report.reducer';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -72,6 +72,7 @@ export class AccountReportComponent implements OnInit {
     private uiStore$: Store<UIState>,
     private actions$: ActionsSubject,
     private dialog: MatDialog,
+    private router: Router,
   ) {
     this.accountReportStore$.pipe(select(selectAccountReport)).subscribe((d) => this.accountReport = d);
 
@@ -98,7 +99,10 @@ export class AccountReportComponent implements OnInit {
         ofType<FailedLoadAccountReport>(AccountReportActionsTypes.FAILED_LOAD_ACCOUNT_REPORT),
       )
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.uiStore$.dispatch(new UIEndLoadingAction()));
+      .subscribe(() => {
+        this.uiStore$.dispatch(new UIEndLoadingAction());
+        this.router.navigateByUrl('/').catch();
+      });
 
     this.actions$
       .pipe(

@@ -2,10 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AccountState } from '../../../store/account/account.reducer';
 import { selectCurrencies, selectUserAccounts } from '../../../store/account/account.selectors';
-import { Currency } from '../../../store/model';
+import { AccountReport, Currency } from '../../../store/model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteAccountAction, RenameAccountAction } from '../../../store/account/account.actions';
 import { Router } from '@angular/router';
+import { selectAccountReport } from '../../../store/account-report/account-report.selectors';
+import { ClearAccountReportAction } from '../../../store/account-report/account-report.actions';
 
 @Component({
   selector: 'app-sidenav',
@@ -106,16 +108,29 @@ export class CreateAccountDialogComponent implements OnInit {
     </div>`
 })
 export class DeleteAccountDialogComponent {
+  private report: AccountReport;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { accountId: string },
     public dialogRef: MatDialogRef<CreateAccountDialogComponent>,
     private accountsStore$: Store<AccountState>,
+    private accountReportStore$: Store<AccountReport>,
+    private router: Router
   ) {
+
+    this.accountReportStore$
+      .pipe(select(selectAccountReport))
+      .subscribe((report) => this.report = report);
   }
 
   onClose(isDelete): void {
     if (isDelete) {
-      this.accountsStore$.dispatch(new DeleteAccountAction({accountId: this.data.accountId}));
+      this.accountsStore$.dispatch(new DeleteAccountAction({ accountId: this.data.accountId }));
+
+      if (this.report.account.id === this.data.accountId) {
+        this.router.navigateByUrl('/').catch();
+        this.accountReportStore$.dispatch(new ClearAccountReportAction());
+      }
     }
     this.dialogRef.close(isDelete);
   }

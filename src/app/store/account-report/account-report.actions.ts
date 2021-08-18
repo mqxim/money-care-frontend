@@ -1,4 +1,4 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { AccountReport } from '../model';
 
 export enum AccountReportActionsTypes {
@@ -13,7 +13,7 @@ export enum AccountReportActionsTypes {
   CREATE_ACCOUNT_TRANSACTION = '[AccountReport] CREATE_ACCOUNT_TRANSACTION',
   CREATE_ACCOUNT_TRANSACTION_LOADED = '[AccountReport] CREATE_ACCOUNT_TRANSACTION_LOADED',
   CREATE_ACCOUNT_TRANSACTION_FAILED = '[AccountReport] CREATE_ACCOUNT_TRANSACTION_FAILED',
-
+  CLEAR_ACCOUNT_REPORT = '[AccountReport] CLEAR_ACCOUNT_REPORT',
 }
 
 export class LoadAccountReportAction implements Action {
@@ -99,6 +99,10 @@ export class CreateAccountTransactionLoadedAction implements Action {
   readonly type = AccountReportActionsTypes.CREATE_ACCOUNT_TRANSACTION_LOADED;
 }
 
+export class ClearAccountReportAction implements Action {
+  readonly type = AccountReportActionsTypes.CLEAR_ACCOUNT_REPORT;
+}
+
 type AccountReportActions = LoadAccountReportAction
   | AccountReportLoaded
   | FailedLoadAccountReport
@@ -110,6 +114,7 @@ type AccountReportActions = LoadAccountReportAction
   | CreateAccountTransactionAction
   | CreateAccountTransactionLoadedAction
   | CreateAccountTransactionFailedAction
+  | ClearAccountReportAction
   ;
 
 export {

@@ -55,6 +55,12 @@ export function accountReportReduces(state = initialState, action: AccountReport
         ),
       };
     }
+    case AccountReportActionsTypes.CLEAR_ACCOUNT_REPORT: {
+      return {
+        ...state,
+        accountReport: null,
+      };
+    }
     default: {
       return state;
     }
