@@ -9,22 +9,26 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { AuthEffects } from './store/auth/auth.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { SignInModule } from './components/sign-in/sign-in.module';
-import { SignUpModule } from './components/sign-up/sign-up.module';
 import { InAppModule } from './components/in-app/in-app/in-app.module';
 
-import { UINode, UIReducer } from './store/ui/ui.reducer';
-import { authNode, authReducer } from './store/auth/auth.reducer';
-import { accountNode, accountReducer } from './store/account/account.reducer';
-import { AccountEffects } from './store/account/account.effects';
-import { accountReportNode, accountReportReduces } from './store/account-report/account-report.reducer';
-import { AccountReportEffects } from './store/account-report/account-report.effects';
 import { CoreUserModule } from '../core/user/core-user.module';
 import { CoreSharedModule } from '../core/shared/infrastructure/core-shared.module';
 import { CoreAccountModule } from '../core/account/infrastructure/core-account.module';
+import { SignInComponent } from './components/auth/sign-in.component';
+import { AngularMaterialModule } from './angular-material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SignUpComponent } from './components/auth/sign-up.component';
+
+import { accountReportNode, accountReportReduces } from './store/account-report/account-report.reducer';
+import { accountNode, accountReducer } from './store/account/account.reducer';
+import { authNode, authReducer } from './store/auth/auth.reducer';
+import { UINode, UIReducer } from './store/ui/ui.reducer';
+
+import { AccountEffects } from './store/account/account.effects';
+import { AccountReportEffects } from './store/account-report/account-report.effects';
+import { AuthEffects } from './store/auth/auth.effects';
 
 const effects = [
   AuthEffects,
@@ -35,6 +39,8 @@ const effects = [
 @NgModule({
   declarations: [
     AppComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -52,13 +58,13 @@ const effects = [
     StoreRouterConnectingModule.forRoot(),
     RouterModule.forRoot([]),
 
-    SignInModule,
-    SignUpModule,
     InAppModule,
 
     CoreUserModule,
     CoreSharedModule,
     CoreAccountModule,
+    AngularMaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [ AppComponent ]
