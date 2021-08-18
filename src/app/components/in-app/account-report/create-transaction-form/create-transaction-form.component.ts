@@ -4,14 +4,10 @@ import { select, Store } from '@ngrx/store';
 import { AccountReportState } from '../../../../store/account-report/account-report.reducer';
 import { selectAccountReport } from '../../../../store/account-report/account-report.selectors';
 import { AccountState } from '../../../../store/account/account.reducer';
-import { selectCurrencies } from '../../../../store/account/account.selectors';
-import Category from '../../../../models/Category';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { selectCategories, selectCurrencies } from '../../../../store/account/account.selectors';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 import { CreateAccountTransactionAction } from '../../../../store/account-report/account-report.actions';
-
-import { Account, Currency } from '../../../../store/model';
+import { Account, Category, Currency } from '../../../../store/model';
 
 @Component({
   selector: 'app-create-transaction-form',
@@ -24,30 +20,34 @@ export class CreateTransactionFormComponent implements OnInit {
   @Output() whenSubmit = new EventEmitter();
 
   form = new FormGroup({
-    category: new FormControl(null, []),
+    category: new FormControl(null, [ Validators.required ]),
     cost: new FormControl(null, [ Validators.required, Validators.min(0) ]),
     comment: new FormControl(null, []),
     isExpense: new FormControl(true),
   });
 
   currency: Currency | null;
+
   accountCurrency: Currency | null;
+
   account: Account | null;
+
   currencies: Currency[];
+
   categories: Category[];
 
-  selectable = false;
-  separatorKeysCodes: number[] = [ ENTER, COMMA ];
-  selectedCategories: string[] = [];
-
   @ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
+
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
     private accountReportStore$: Store<AccountReportState>,
     private accountsStore$: Store<AccountState>,
   ) {
-    this.categories = Category.getAll();
+    this.accountsStore$
+      .pipe(select(selectCategories))
+      .subscribe((c) => this.categories = c)
+    ;
 
     this.accountReportStore$
       .pipe(select(selectAccountReport))
@@ -70,39 +70,6 @@ export class CreateTransactionFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedCategories = [];
-    this.selectedCategories.push(event.option.viewValue);
-    this.categoryInput.nativeElement.value = '';
-
-    this.form.controls.category.setValue(event.option.viewValue);
-  }
-
-  remove(f: string): void {
-    const index = this.selectedCategories.indexOf(f);
-    if (index >= 0) {
-      this.selectedCategories.splice(index, 1);
-    }
-
-    this.selectedCategories = [];
-    this.form.controls.category.setValue(null);
-  }
-
-  addCategory(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.selectedCategories = [];
-      this.selectedCategories.push(value.trim());
-      this.form.controls.category.setValue(value.trim());
-    }
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
   onClose(): void {
     this.whenClose.emit();
   }
@@ -110,14 +77,10 @@ export class CreateTransactionFormComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       const result = {
-        category: '',
+        category: this.form.controls.category.value ?? 0,
         cost: 0,
-        comment: '',
+        comment: this.form.controls.comment.value ?? '',
       };
-
-      if (this.form.controls.category.value) {
-        result.category = this.form.controls.category.value;
-      }
 
       if (this.form.controls.cost.value) {
         result.cost = this.form.controls.isExpense.value ? (this.form.controls.cost.value * -1) : this.form.controls.cost.value;
@@ -126,13 +89,9 @@ export class CreateTransactionFormComponent implements OnInit {
         }
       }
 
-      if (this.form.controls.comment.value) {
-        result.comment = this.form.controls.comment.value;
-      }
-
       this.accountReportStore$.dispatch(new CreateAccountTransactionAction({
         accountId: this.account.id,
-        category: result.category,
+        categoryId: result.category,
         cost: result.cost,
         comment: result.comment,
         dateTime: new Date().toISOString()

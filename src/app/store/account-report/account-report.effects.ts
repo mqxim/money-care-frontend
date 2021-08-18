@@ -73,7 +73,7 @@ export class AccountReportEffects {
         return fromPromise(this.accountService.createTransaction({
             accountId: action.payload.accountId,
             date: new Date(action.payload.dateTime),
-            categoryId: '1',
+            categoryId: action.payload.categoryId,
             cost: action.payload.cost,
             comment: action.payload.comment,
           })

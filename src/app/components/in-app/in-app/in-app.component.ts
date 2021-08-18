@@ -9,7 +9,7 @@ import { UIState } from '../../../store/ui/ui.reducer';
 import { ofType } from '@ngrx/effects';
 import { Observable, Subject } from 'rxjs';
 import { AccountState } from '../../../store/account/account.reducer';
-import { LoadCurrenciesAction, LoadUserAccountsAction } from '../../../store/account/account.actions';
+import { LoadCategoriesAction, LoadCurrenciesAction, LoadUserAccountsAction } from '../../../store/account/account.actions';
 import { selectLoadingQueue } from '../../../store/ui/ui.selectors';
 import { CredentialsService } from '../../../../core/shared/domain/service/credentials.service';
 
@@ -38,6 +38,7 @@ export class InAppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.accountsStore$.dispatch(new LoadUserAccountsAction());
     this.accountsStore$.dispatch(new LoadCurrenciesAction());
+    this.accountsStore$.dispatch(new LoadCategoriesAction());
 
     this.actions$
       .pipe(

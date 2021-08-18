@@ -1,38 +1,19 @@
 <div>
   <h1>💳 Create new transaction</h1>
   <form [formGroup]="form">
-    <mat-form-field class="full-width-input">
-      <mat-label>Category</mat-label>
-      <mat-chip-list #list aria-label="Fruit selection">
-        <mat-chip
-          *ngFor="let category of selectedCategories"
-          [selectable]="selectable"
-          [removable]="true"
-          (removed)="remove(category)"
-        >{{category}}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <input
-          [placeholder]="selectedCategories.length === 0 ? 'Category' : ''"
-          #categoryInput
-          [matChipInputFor]="list"
-          [formControl]="form.controls.category"
-          formControlName="category"
-          [matAutocomplete]="auto"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="false"
-          (matChipInputTokenEnd)="addCategory($event)"
-        >
-      </mat-chip-list>
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-form-field class="full-width-input" appearance="legacy">
+      <mat-label>📊 Select category</mat-label>
+      <mat-select
+        [formControl]="form.controls.category"
+      >
         <mat-option
-          [disabled]="selectedCategories.indexOf(category.name) !== -1"
-          *ngFor="let category of categories" [value]="category.name">
+          *ngFor="let category of categories" [value]="category.id">
           <span
             [style.backgroundColor]="category.color"
             class="category-selector"></span>{{category.name}}
         </mat-option>
-      </mat-autocomplete>
+      </mat-select>
+      <mat-error *ngIf="form.controls.category.invalid">Category is required</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-input">
       <input matInput formControlName="cost" type="number" class="input-cost">

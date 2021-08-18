@@ -83,7 +83,7 @@ export class CreateAccountTransactionAction implements Action {
 
   constructor(public payload: {
     accountId: string,
-    category: string,
+    categoryId: string,
     cost: number,
     comment: string,
     dateTime: string

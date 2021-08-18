@@ -6,6 +6,7 @@ import { AccountRepository } from '../../domain/repository/account.repository';
 import { CurrencyRepository } from '../../domain/repository/currency.repository';
 import { CredentialsService } from '../../../shared/domain/service/credentials.service';
 import { Injectable } from '@angular/core';
+import { CategoryRepository } from '../../domain/repository/category.repository';
 
 class GenerateAccountReportException extends Error {
   constructor() {
@@ -38,6 +39,7 @@ export class GenerateAccountReportUseCase {
     private readonly transactionsRepository: TransactionRepository,
     private readonly currencyRepository: CurrencyRepository,
     private readonly authService: CredentialsService,
+    private readonly categoryRepository: CategoryRepository,
   ) {
   }
 
@@ -58,6 +60,8 @@ export class GenerateAccountReportUseCase {
 
     const currency = await this.currencyRepository.findOne(account.getCurrencyId());
 
+    const categories = await this.categoryRepository.findAll();
+
     const currentBalance = (await this.transactionsRepository.findTransactionForAccountBetweenDates({
       id: request.accountId,
       dateStart: new Date(0),
@@ -74,6 +78,8 @@ export class GenerateAccountReportUseCase {
         cost: t.getCost(),
         comment: t.getComment(),
         createDate: t.getCreateDate(),
+        categoryName: categories.filter((c) => c.id === t.getCategoryId()).shift()?.getName() ?? 'Unknown',
+        categoryColor: categories.filter((c) => c.id === t.getCategoryId()).shift()?.getColor() ?? '#000',
       })),
       currentBalance,
       incomes:

@@ -63,7 +63,7 @@ export class AccountReportService {
           expenses: response.expenses,
           periodBalance: response.periodBalance,
           transactions: response.transactions.map((t) => new Transaction(
-            t.id, t.accountId, t.categoryId, t.cost, t.comment, t.createDate,
+            t.id, t.accountId, t.categoryId, t.categoryName, t.categoryColor, t.cost, t.comment, t.createDate,
           )),
           account: new Account(
             response.account.id,

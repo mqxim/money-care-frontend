@@ -17,6 +17,8 @@ import { selectAccountReport } from '../../../store/account-report/account-repor
 import { AccountReport } from '../../../store/model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Category from '../../../models/Category';
+import { AccountState } from '../../../store/account/account.reducer';
+import { selectCategories } from '../../../store/account/account.selectors';
 
 export interface CardSettings {
   backgroundColor: string;
@@ -55,16 +57,21 @@ export class AccountReportComponent implements OnInit {
 
   accountReport: AccountReport | null;
 
+  categories: Category[];
+
   id: string | null = null;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private accountReportStore$: Store<AccountReportState>,
+    private accountsStore$: Store<AccountState>,
     private uiStore$: Store<UIState>,
     private actions$: ActionsSubject,
     private dialog: MatDialog,
   ) {
     this.accountReportStore$.pipe(select(selectAccountReport)).subscribe((d) => this.accountReport = d);
+
+    this.accountsStore$.pipe(select(selectCategories)).subscribe((d) => this.categories = d);
 
     activateRoute.params.subscribe(params => {
       this.id = params.id;
